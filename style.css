@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 1. Emerald (Light Mint Theme) */
+body.theme-emerald {
+    background-color: #f0fdf4;
+    color: #064e3b;
+    --brand-50: #f0fdf4;
+    --brand-100: #dcfce7;
+    --brand-500: #22c55e;
+    --brand-600: #16a34a;
+    --brand-700: #15803d;
+    --brand-900: #14532d;
+    --card-overlay-from: rgba(6, 78, 59, 0.96);
+    --card-overlay-via: rgba(6, 78, 59, 0.65);
+}
+
+body.theme-emerald .portfolio-header {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-color: #bbf7d0;
+    color: #064e3b;
+}
+
+body.theme-emerald .portfolio-badge {
+    background-color: #dcfce7;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+
+body.theme-emerald h1,
+body.theme-emerald h2 {
+    color: #022c22;
+}
+
+/* 2. Midnight (Pitch Dark Theme) */
+body.theme-midnight {
+    background-color: #020617;
+    color: #f8fafc;
+    --brand-50: #ecfeff;
+    --brand-100: #cffafe;
+    --brand-500: #06b6d4;
+    --brand-600: #0891b2;
+    --brand-700: #0e7490;
+    --brand-900: #164e63;
+    --card-overlay-from: rgba(2, 6, 23, 0.95);
+    --card-overlay-via: rgba(2, 6, 23, 0.5);
+}
+
+body.theme-midnight .portfolio-header {
+    background-color: rgba(15, 23, 42, 0.85);
+    border-color: rgba(51, 65, 85, 0.8);
+    color: #f8fafc;
+}
+
+body.theme-midnight .portfolio-badge {
+    background-color: rgba(15, 23, 42, 0.9);
+    border-color: rgba(51, 65, 85, 0.8);
+    color: #cffafe;
+}
+
+body.theme-midnight h1,
+body.theme-midnight h2 {
+    color: #ffffff;
+}
+
+/* 3. Ocean (Medium Slate-Navy Theme) */
+body.theme-ocean {
+    background-color: #1e293b;
+    color: #f1f5f9;
+    --brand-50: #eff6ff;
+    --brand-100: #dbeafe;
+    --brand-500: #3b82f6;
+    --brand-600: #2563eb;
+    --brand-700: #1d4ed8;
+    --brand-900: #1e3a8a;
+    --card-overlay-from: rgba(30, 41, 59, 0.95);
+    --card-overlay-via: rgba(30, 41, 59, 0.5);
+}
+
+body.theme-ocean .portfolio-header {
+    background-color: rgba(30, 41, 59, 0.9);
+    border-color: rgba(71, 85, 105, 0.8);
+    color: #f1f5f9;
+}
+
+body.theme-ocean .portfolio-badge {
+    background-color: #0f172a;
+    border-color: rgba(71, 85, 105, 0.8);
+    color: #93c5fd;
+}
+
+body.theme-ocean h1,
+body.theme-ocean h2 {
+    color: #ffffff;
+}
+
+/* 4. Sunset (Light Warm Cream Theme) */
+body.theme-sunset {
+    background-color: #fffbeb;
+    color: #d1beb4f3;
+    --brand-50: #fffbeb;
+    --brand-100: #fef3c7;
+    --brand-500: #f59e0b;
+    --brand-600: #d97706;
+    --brand-700: #b45309;
+    --brand-900: #78350f;
+    /* Darkened overlay contrast specifically for lighter themes */
+    --card-overlay-from: rgba(45, 15, 2, 0.674);
+    --card-overlay-via: rgba(45, 15, 2, 0.75);
+}
+
+body.theme-sunset .portfolio-header {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-color: #fde68a;
+    color: #451a03;
+}
+
+body.theme-sunset .portfolio-badge {
+    background-color: #fef3c7;
+    border-color: #fde68a;
+    color: #92400e;
+}
+
+body.theme-sunset h1,
+body.theme-sunset h2 {
+    color: #451a03;
+}
+
+/* 5. Crimson (Dark Wine/Red Theme) */
+body.theme-crimson {
+    background-color: #180d0d;
+    color: #fef2f2;
+    --brand-50: #fef2f2;
+    --brand-100: #fee2e2;
+    --brand-500: #ef4444;
+    --brand-600: #dc2626;
+    --brand-700: #b91c1c;
+    --brand-900: #7f1d1d;
+    --card-overlay-from: rgba(24, 13, 13, 0.95);
+    --card-overlay-via: rgba(24, 13, 13, 0.5);
+}
+
+body.theme-crimson .portfolio-header {
+    background-color: rgba(30, 15, 15, 0.85);
+    border-color: rgba(127, 29, 29, 0.5);
+    color: #fef2f2;
+}
+
+body.theme-crimson .portfolio-badge {
+    background-color: rgba(24, 13, 13, 0.9);
+    border-color: rgba(127, 29, 29, 0.5);
+    color: #fca5a5;
+}
+
+body.theme-crimson h1,
+body.theme-crimson h2 {
+    color: #ffffff;
+}
+
+/* 6. Purple (Medium Plum Theme) */
+body.theme-purple {
+    background-color: #2e1065;
+    color: #f3e8ff;
+    --brand-50: #faf5ff;
+    --brand-100: #f3e8ff;
+    --brand-500: #a855f7;
+    --brand-600: #9333ea;
+    --brand-700: #7e22ce;
+    --brand-900: #581c87;
+    --card-overlay-from: rgba(46, 16, 101, 0.95);
+    --card-overlay-via: rgba(46, 16, 101, 0.5);
+}
+
+body.theme-purple .portfolio-header {
+    background-color: rgba(46, 16, 101, 0.9);
+    border-color: rgba(147, 51, 234, 0.4);
+    color: #f3e8ff;
+}
+
+body.theme-purple .portfolio-badge {
+    background-color: #1e1b4b;
+    border-color: rgba(147, 51, 234, 0.4);
+    color: #d8b4fe;
+}
+
+body.theme-purple h1,
+body.theme-purple h2 {
+    color: #ffffff;
+}
+
+/* 7. Slate (Light Clean Gray Theme) */
+body.theme-slate {
+    background-color: #f1f5f9;
+    color: #8e9199;
+    --brand-50: #f8fafc;
+    --brand-100: #f1f5f9;
+    --brand-500: #64748b;
+    --brand-600: #475569;
+    --brand-700: #334155;
+    --brand-900: #1e293b;
+    --card-overlay-from: rgba(15, 23, 42, 0.695);
+    --card-overlay-via: rgba(15, 23, 42, 0.65);
+}
+
+body.theme-slate .portfolio-header {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+body.theme-slate .portfolio-badge {
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
+    color: #334155;
+}
+
+body.theme-slate h1,
+body.theme-slate h2 {
+    color: #0f172a;
+}
+
+.portfolio-header {
+    backdrop-filter: blur(8px);
+    border-bottom-width: 1px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-badge {
+    border-width: 1px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Dynamic theme card background shade overlays */
+.card-bg-base {
+    background-color: var(--card-overlay-from);
+}
+
+.card-gradient-overlay {
+    background: linear-gradient(to top, var(--card-overlay-from) 0%, var(--card-overlay-via) 60%, transparent 100%);
+}

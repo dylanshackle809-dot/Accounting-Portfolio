@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portfolio Hub</title>
+    <link id="dynamic-favicon" rel="icon" type="image/png" href="">
+
+    <!-- ========================================================================= -->
+    <!-- STUDENT CONFIGURATION AREA (EDIT HERE ONLY - NO SCROLLING REQUIRED) -->
+    <!-- ========================================================================= -->
+    <script src="index-data.js"></script>
+    <script>
+
+    </script>
+    <!-- ========================================================================= -->
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: 'var(--brand-50)',
+                            100: 'var(--brand-100)',
+                            500: 'var(--brand-500)',
+                            600: 'var(--brand-600)',
+                            700: 'var(--brand-700)',
+                            900: 'var(--brand-900)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="theme-emerald min-h-full flex flex-col justify-between">
+
+    <!-- Top Navigation / Header Hub -->
+    <header class="portfolio-header py-6 px-8">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-4">
+                <img id="student-avatar" src="" alt="Student Avatar"
+                    class="w-14 h-14 rounded-full object-cover border-2 border-brand-500 shadow-md"
+                    onerror="this.src='https://placehold.co/150x150/1e293b/ffffff?text=Avatar'">
+                <div>
+                    <span id="student-meta"
+                        class="text-xs font-semibold text-brand-500 uppercase tracking-widest">Project Showcase</span>
+                    <h1 id="student-name" class="text-2xl font-bold tracking-tight">Student Name</h1>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="portfolio-badge px-4 py-2 rounded-xl text-xs flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-brand-500"></i>
+                    <span id="course-label">Accounting 11</span>
+                </div>
+                <div
+                    class="bg-white p-1.5 rounded-xl border border-slate-300 shadow-md flex items-center justify-center">
+                    <img id="header-qrcode" src="" alt="QR Code" class="w-20 h-20 object-contain"
+                        onerror="this.src='https://placehold.co/100x100/ffffff/000000?text=QR'">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Project Grid Section -->
+    <main class="max-w-6xl w-full mx-auto p-6 md:p-10 space-y-8 flex-grow flex flex-col justify-center">
+        <div class="text-center max-w-xl mx-auto space-y-2">
+            <h2 class="text-2xl font-bold tracking-tight">Accounting Project Portfolio</h2>
+            <p class="text-xs opacity-80">Select any module below to launch your interactive project workspace and
+                financial ledger.</p>
+        </div>
+
+        <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Dynamically injected via JS -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="portfolio-header py-6 text-center text-xs opacity-75">
+        <p>Student Accounting Portfolio</p>
+    </footer>
+
+    <!-- Initialization Script -->
+    <script>
+        window.onload = function () {
+            // Apply Theme Variable
+            document.body.className = `theme-${STUDENT_CONFIG.currentTheme || 'emerald'} min-h-full flex flex-col justify-between`;
+
+            // Set Browser Title and Favicon dynamically using config data
+            document.title = `${STUDENT_CONFIG.firstName} - ${STUDENT_CONFIG.courseName}`;
+            document.getElementById('dynamic-favicon').href = "pics/" + STUDENT_CONFIG.avatarUrl;
+
+            // Populate student header details and QR code
+            document.getElementById('student-name').textContent = STUDENT_CONFIG.firstName + " " + STUDENT_CONFIG.lastName;
+            document.getElementById('student-avatar').src = "pics/" + STUDENT_CONFIG.avatarUrl;
+            document.getElementById('course-label').textContent = STUDENT_CONFIG.courseName;
+            document.getElementById('header-qrcode').src = "pics/" + STUDENT_CONFIG.qrCodeUrl;
+
+            // Render Project Cards
+            const grid = document.getElementById('projects-grid');
+            grid.innerHTML = STUDENT_CONFIG.projects.map(p => `
+                <a href="${p.url}" class="group relative rounded-2xl overflow-hidden shadow-xl border border-slate-700/50 aspect-[4/5] flex flex-col justify-end transition transform hover:-translate-y-1 hover:border-brand-500">
+                    <div class="absolute inset-0 card-bg-base">
+                        <img src="pics/${p.bgImage}" alt="${p.title}" class="w-full h-full object-cover opacity-45 transition duration-500 group-hover:scale-110 group-hover:opacity-55" onerror="this.src='https://placehold.co/600x800/1e293b/ffffff?text=${encodeURIComponent(p.title)}'">
+                        <div class="absolute inset-0 card-gradient-overlay"></div>
+                    </div>
+
+                    <div class="relative p-6 z-10 space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-brand-500/90 text-white flex items-center justify-center shadow-md mb-2 group-hover:bg-brand-400 transition">
+                            <i class="fa-solid ${p.icon} text-lg"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-brand-400 uppercase tracking-wider">${p.category}</span>
+                        <h3 class="text-lg font-bold text-white leading-snug group-hover:text-brand-300 transition">${p.title}</h3>
+                        <p class="text-xs text-slate-300 line-clamp-2">${p.description}</p>
+                        <div class="pt-2 flex items-center gap-1.5 text-xs font-semibold text-brand-400">
+                            <span>Open Project</span> <i class="fa-solid fa-arrow-right text-[10px] transition transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        };
+    </script>
+</body>
+
+</html>

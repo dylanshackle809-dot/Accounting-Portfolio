@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounting Investment Portfolio - Phase II</title>
+    <!-- Dynamic Favicon -->
+    <link id="dynamic-favicon" rel="icon" type="image/png" href="">
+
+    <!-- External Data Files -->
+    <script src="index-data.js"></script>
+    <script src="stocks-data.js"></script>
+    <script src="stocks2-data.js"></script>
+
+    <script>
+        // Set dynamic document title and favicon using index-data.js (STUDENT_CONFIG)
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof STUDENT_CONFIG !== 'undefined') {
+                const studentName = STUDENT_CONFIG.firstName ? `${STUDENT_CONFIG.firstName} ${STUDENT_CONFIG.lastName || ''}`.trim() : (STUDENT_CONFIG.studentName || STUDENT_CONFIG.studentAuthor || '');
+                const courseName = STUDENT_CONFIG.courseName || '';
+                if (studentName && courseName) {
+                    document.title = `${studentName} - ${courseName} (Phase II)`;
+                }
+                if (STUDENT_CONFIG.avatarUrl) {
+                    document.getElementById('dynamic-favicon').href = "pics/" + STUDENT_CONFIG.avatarUrl;
+                }
+            }
+        });
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: 'var(--brand-50, #f0fdf4)',
+                            100: 'var(--brand-100, #dcfce7)',
+                            500: 'var(--brand-500, #22c55e)',
+                            600: 'var(--brand-600, #16a34a)',
+                            700: 'var(--brand-700, #15803d)',
+                            900: 'var(--brand-900, #14532d)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="theme-emerald min-h-full flex flex-col bg-slate-50 text-slate-900">
+
+    <header class="portfolio-header py-6 px-8 bg-slate-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div id="header-avatar-container"
+                    class="rounded-xl shadow-lg overflow-hidden w-12 h-12 flex items-center justify-center bg-slate-800 shrink-0">
+                    <i class="fa-solid fa-chart-line text-xl text-brand-400" id="header-icon"></i>
+                </div>
+                <div>
+                    <span id="header-business"
+                        class="text-xs font-semibold text-brand-400 uppercase tracking-widest">Business Name</span>
+                    <h1 id="header-title" class="text-xl font-bold tracking-tight">Virtual Stock & ETF Portfolio</h1>
+                    <p id="header-subtitle" class="text-xs text-slate-400">Student Accounting Investment Portfolio -
+                        Phase II</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html"
+                    class="px-4 py-2 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left text-brand-400"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Asset Selection & Rationale Grid -->
+        <section class="space-y-4">
+            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-folder-open text-brand-600"></i> Selected Holdings & Investment Rationale
+                    </h2>
+                    <p class="text-xs text-slate-500">Portfolio composition consisting of equities, ETFs, and available
+                        liquid capital.</p>
+                </div>
+            </div>
+
+            <div id="holdings-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Populated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- KPI Dollar & Value Summary Cards -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Cash on Hand</span>
+                    <h3 id="kpi-cashOnHand" class="text-xl font-black text-blue-600 mt-1">$0</h3>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-500">Uninvested Capital</span>
+                    <span class="font-bold text-blue-600"><i class="fa-solid fa-money-bill-wave"></i> Liquid</span>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Book Value</span>
+                    <h3 id="kpi-bookValue" class="text-xl font-black text-slate-900 mt-1">$0</h3>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-500">Cost Basis + Fees</span>
+                    <span class="font-bold text-slate-700"><i class="fa-solid fa-wallet"></i> Principal</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Market
+                        Value</span>
+                    <h3 id="kpi-marketValue" class="text-xl font-black text-slate-900 mt-1">$0</h3>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-500">Equities + ETFs</span>
+                    <span class="font-bold text-brand-600"><i class="fa-solid fa-arrow-trend-up"></i> Market</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Unrealized Gain /
+                        Loss</span>
+                    <h3 id="kpi-gainLoss" class="text-xl font-black text-slate-900 mt-1">$0</h3>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-500">Return Percentage</span>
+                    <span id="kpi-gainLossPct" class="font-bold text-emerald-600">0.0%</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Monthly Dividend
+                        Yield</span>
+                    <h3 id="kpi-dividends" class="text-xl font-black text-slate-900 mt-1">$0</h3>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-500">Passive Cash Inflow</span>
+                    <span class="font-bold text-brand-600">Inflow</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transaction History & Ledger Table -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-table-list text-brand-600"></i> Transaction History & Ledger
+                </h3>
+                <span class="text-xs text-slate-400">Accounting Portfolio Ledger</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-600 uppercase font-bold tracking-wider">
+                            <th class="p-3 rounded-l-lg">Asset / Ticker</th>
+                            <th class="p-3">Type</th>
+                            <th class="p-3 text-center">Shares</th>
+                            <th class="p-3 text-right">Book Price</th>
+                            <th class="p-3 text-right">Transaction Fee</th>
+                            <th class="p-3 text-right">Total Spent (Book Value)</th>
+                            <th class="p-3 text-right">Market Price</th>
+                            <th class="p-3 text-right">Total Market Value</th>
+                            <th class="p-3 text-right rounded-r-lg">Gain / Loss</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledger-tbody" class="divide-y divide-slate-100">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Phase II: Additional Purchases & Sales Section -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-right-left text-brand-600"></i> Phase II: Secondary Purchases & Sales Log
+                    </h3>
+                    <p class="text-xs text-slate-500">Record of additional shares bought or sold during portfolio
+                        management.</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-600 uppercase font-bold tracking-wider">
+                            <th class="p-3 rounded-l-lg">Action</th>
+                            <th class="p-3">Ticker</th>
+                            <th class="p-3 text-center">Shares</th>
+                            <th class="p-3 text-right">Execution Price</th>
+                            <th class="p-3 text-right">Fee</th>
+                            <th class="p-3 rounded-r-lg">Strategic Reason for Adjustment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="secondary-transactions-tbody" class="divide-y divide-slate-100">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Ongoing Portfolio Business Income & Borrowing Cost Expenses -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-scale-balanced text-brand-600"></i> Ongoing Portfolio Income & Borrowing Costs
+                </h2>
+                <p class="text-xs text-slate-500">Comparing monthly dividend cash inflows against monthly borrowing cost
+                    outflows.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-brand-50/40 border border-brand-100 rounded-xl p-5 space-y-4">
+                    <div class="flex items-center justify-between border-b border-brand-200/60 pb-3">
+                        <h3 class="font-bold text-brand-900 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-trend-up text-brand-600"></i> Monthly Dividend Inflow
+                        </h3>
+                        <span id="total-income-amount" class="text-sm font-black text-brand-700">$0</span>
+                    </div>
+                    <div class="space-y-2.5 text-xs text-slate-700" id="income-items-container"></div>
+                </div>
+
+                <div class="bg-amber-50/40 border border-amber-100 rounded-xl p-5 space-y-4">
+                    <div class="flex items-center justify-between border-b border-amber-200/60 pb-3">
+                        <h3 class="font-bold text-amber-900 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-trend-down text-amber-600"></i> Borrowing Cost Outflow
+                        </h3>
+                        <span id="total-expense-amount" class="text-sm font-black text-amber-700">$0</span>
+                    </div>
+                    <div class="space-y-3 text-xs text-slate-700" id="expense-items-container"></div>
+                </div>
+            </div>
+
+            <div id="net-cashflow-banner"
+                class="p-4 rounded-xl border flex items-center justify-between text-xs font-semibold">
+            </div>
+        </section>
+
+        <!-- Focused Stock Analysis -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-6">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass-chart text-brand-600"></i> Focused Stock Analysis: <span
+                            id="deepdive-title-ticker">AAPL</span>
+                    </h3>
+                    <p class="text-xs text-slate-500">Comprehensive fundamental 4-quarter trends and technical analysis.
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-table text-brand-600"></i> 4-Quarter Financial Trend Metrics
+                </h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border border-slate-200 rounded-xl overflow-hidden">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 uppercase font-bold tracking-wider">
+                                <th class="p-3">Quarter Period</th>
+                                <th class="p-3 text-right">Revenue Growth (YoY)</th>
+                                <th class="p-3 text-right">Change in EBITDA</th>
+                                <th class="p-3 text-right">Debt-to-Equity Ratio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deepdive-quarters-tbody" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase">1-Year Target Price</span>
+                    <div class="mt-2">
+                        <span id="target-price-val" class="text-xl font-black text-slate-900">$0.00</span>
+                        <span class="block text-xs text-brand-600 font-semibold mt-0.5" id="target-upside-val">+0.0%
+                            Upside</span>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase">Estimated Downside Risk</span>
+                    <div class="mt-2">
+                        <span id="target-downside-val" class="text-xl font-black text-rose-600">-0.0%</span>
+                        <span class="block text-xs text-slate-500 font-medium mt-0.5">Support Level Floor</span>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <span class="text-[11px] font-bold text-slate-400 uppercase">Analyst Consensus</span>
+                    <div class="mt-2">
+                        <span id="target-consensus-val" class="text-base font-bold text-slate-900">Moderate Buy</span>
+                        <span class="block text-xs text-slate-500 mt-0.5">Based on multi-model forecast</span>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-brand-50/50 rounded-xl border border-brand-100 text-xs text-slate-700 leading-relaxed">
+                <strong>Prediction Rationale:</strong> <span id="target-rationale-text"></span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h5 class="font-bold text-slate-900 text-xs flex items-center gap-2">
+                            <i class="fa-solid fa-cloud text-brand-600"></i> Ichimoku Cloud Analysis
+                        </h5>
+                        <span id="ichimoku-status-badge"
+                            class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">Bullish</span>
+                    </div>
+                    <div
+                        class="relative h-48 bg-slate-900 rounded-lg overflow-hidden flex items-center justify-center border border-slate-700">
+                        <img src="pics/ichimoku-chart-placeholder.png" alt="Ichimoku Cloud Chart Placeholder"
+                            class="w-full h-full object-cover opacity-80"
+                            onerror="this.src='https://placehold.co/600x300/0f172a/38bdf8?text=Ichimoku+Cloud+Chart'">
+                    </div>
+                    <p id="ichimoku-desc-text" class="text-xs text-slate-600 leading-relaxed"></p>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h5 class="font-bold text-slate-900 text-xs flex items-center gap-2">
+                            <i class="fa-solid fa-signal text-brand-600"></i> GoNoGo Trend Analysis
+                        </h5>
+                        <span id="gonogo-status-badge"
+                            class="px-2 py-0.5 bg-brand-100 text-brand-800 rounded font-bold text-[10px]">Go
+                            (Strong)</span>
+                    </div>
+                    <div
+                        class="relative h-48 bg-slate-900 rounded-lg overflow-hidden flex items-center justify-center border border-slate-700">
+                        <img src="pics/gonogo-chart-placeholder.png" alt="GoNoGo Chart Placeholder"
+                            class="w-full h-full object-cover opacity-80"
+                            onerror="this.src='https://placehold.co/600x300/0f172a/22c55e?text=GoNoGo+Trend+Chart'">
+                    </div>
+                    <p id="gonogo-desc-text" class="text-xs text-slate-600 leading-relaxed"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-brand-600"></i> Portfolio Allocation by Market Value (Incl.
+                        Cash)
+                    </h4>
+                </div>
+                <div class="relative h-64 flex items-center justify-center">
+                    <canvas id="allocationChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-chart-column text-brand-600"></i> Book Value vs. Market Value Comparison
+                    </h4>
+                </div>
+                <div class="relative h-64">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategic Summary: SWOT Analysis Block -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-6">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-chess text-brand-600"></i> Strategic Summary: SWOT Analysis
+                </h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-emerald-50/40 border border-emerald-100 rounded-xl p-5 space-y-3">
+                    <div
+                        class="flex items-center gap-2 text-emerald-900 font-bold text-sm border-b border-emerald-200/60 pb-2">
+                        <i class="fa-solid fa-shield-halved text-emerald-600"></i> <span
+                            id="swot-s-title">Strengths</span>
+                    </div>
+                    <p id="swot-s-text" class="text-xs text-slate-700 leading-relaxed"></p>
+                </div>
+                <div class="bg-amber-50/40 border border-amber-100 rounded-xl p-5 space-y-3">
+                    <div
+                        class="flex items-center gap-2 text-amber-900 font-bold text-sm border-b border-amber-200/60 pb-2">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> <span
+                            id="swot-w-title">Weaknesses</span>
+                    </div>
+                    <p id="swot-w-text" class="text-xs text-slate-700 leading-relaxed"></p>
+                </div>
+                <div class="bg-sky-50/40 border border-sky-100 rounded-xl p-5 space-y-3">
+                    <div class="flex items-center gap-2 text-sky-900 font-bold text-sm border-b border-sky-200/60 pb-2">
+                        <i class="fa-solid fa-lightbulb text-sky-600"></i> <span id="swot-o-title">Opportunities</span>
+                    </div>
+                    <p id="swot-o-text" class="text-xs text-slate-700 leading-relaxed"></p>
+                </div>
+                <div class="bg-rose-50/40 border border-rose-100 rounded-xl p-5 space-y-3">
+                    <div
+                        class="flex items-center gap-2 text-rose-900 font-bold text-sm border-b border-rose-200/60 pb-2">
+                        <i class="fa-solid fa-hurricane text-rose-600"></i> <span id="swot-t-title">Threats</span>
+                    </div>
+                    <p id="swot-t-text" class="text-xs text-slate-700 leading-relaxed"></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="portfolio-header py-6 mt-auto text-center text-xs text-slate-500 bg-slate-900 text-slate-400">
+        <div class="max-w-7xl mx-auto px-4">
+            Virtual Stock & ETF Portfolio Showcase &bull; Designed for Accounting Students &bull; Phase II Investment
+            Matrix
+        </div>
+    </footer>
+
+    <!-- Main Application Script -->
+    <script>
+        let allocationChartInstance = null;
+        let comparisonChartInstance = null;
+
+        function formatCurrency(val) {
+            return '$' + Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function runStockModel() {
+            // Load avatar from STUDENT_CONFIG matching stocks_3.html pattern
+            if (typeof STUDENT_CONFIG !== 'undefined' && STUDENT_CONFIG.avatarUrl) {
+                const avatarContainer = document.getElementById('header-avatar-container');
+                if (avatarContainer) {
+                    avatarContainer.innerHTML = `<img src="pics/${STUDENT_CONFIG.avatarUrl}" alt="Avatar" class="w-full h-full object-cover">`;
+                }
+            }
+
+            document.getElementById('header-business').innerText = STOCK_CONFIG.businessName;
+            document.getElementById('header-title').innerText = STOCK_CONFIG.portfolioName;
+
+            // Format author/name string properly including first name
+            const studentAuthorName = (typeof STUDENT_CONFIG !== 'undefined' && STUDENT_CONFIG.firstName)
+                ? `${STUDENT_CONFIG.firstName} ${STUDENT_CONFIG.lastName || ''}`.trim()
+                : (STOCK_CONFIG.studentAuthor || "");
+            document.getElementById('header-subtitle').innerText = studentAuthorName + " (Phase II)";
+
+            let totalBookValue = 0;
+            let totalMarketValue = 0;
+            let totalFees = 0;
+            let totalMonthlyDividend = 0;
+            let cashOnHand = (typeof PHASE2_CONFIG !== 'undefined' && PHASE2_CONFIG.cashOnHand) ? PHASE2_CONFIG.cashOnHand : 0;
+
+            // Dynamically calculate holdings, book prices, and share changes
+            let adjustedHoldings = STOCK_CONFIG.holdings.map(h => {
+                let item = { ...h };
+                let originalShares = h.shares;
+                let originalPrice = h.purchasePrice;
+
+                let currentShares = originalShares;
+                let totalCost = (originalShares * originalPrice) + item.transactionFee;
+
+                let hasBuyTransaction = false;
+
+                if (typeof PHASE2_CONFIG !== 'undefined' && PHASE2_CONFIG.secondaryTransactions) {
+                    PHASE2_CONFIG.secondaryTransactions.forEach(tx => {
+                        if (tx.ticker === item.ticker) {
+                            if (tx.action.toUpperCase() === 'BUY') {
+                                hasBuyTransaction = true;
+                                totalCost += (tx.shares * tx.transactionPrice) + tx.transactionFee;
+                                currentShares += tx.shares;
+                            } else if (tx.action.toUpperCase() === 'SELL') {
+                                const sharesToRemove = Math.min(tx.shares, currentShares);
+                                totalCost -= (sharesToRemove * originalPrice);
+                                currentShares -= sharesToRemove;
+                            }
+                        }
+                    });
+                }
+
+                item.shares = currentShares;
+                item.calculatedBookVal = Math.max(0, totalCost);
+
+                if (hasBuyTransaction) {
+                    item.effectiveBookPrice = currentShares > 0 ? totalCost / currentShares : originalPrice;
+                } else {
+                    item.effectiveBookPrice = originalPrice;
+                    item.calculatedBookVal = currentShares * originalPrice;
+                }
+
+                if (item.shares > originalShares) {
+                    item.sharesDisplay = `${item.shares} (${originalShares}+${item.shares - originalShares})`;
+                } else if (item.shares < originalShares) {
+                    item.sharesDisplay = `${item.shares} (${originalShares}-${originalShares - item.shares})`;
+                } else {
+                    item.sharesDisplay = `${item.shares}`;
+                }
+
+                if (hasBuyTransaction && item.effectiveBookPrice !== originalPrice) {
+                    item.bookPriceDisplay = `${formatCurrency(originalPrice)} &rarr; ${formatCurrency(item.effectiveBookPrice)}`;
+                } else {
+                    item.bookPriceDisplay = formatCurrency(originalPrice);
+                }
+
+                return item;
+            });
+
+            // Render Holdings Grid
+            const holdingsGrid = document.getElementById('holdings-grid');
+            holdingsGrid.innerHTML = adjustedHoldings.map(item => {
+                const assetMonthlyDiv = item.shares * item.monthlyDividendPerShare;
+                totalMonthlyDividend += assetMonthlyDiv;
+
+                return `
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between">
+                        <div class="relative h-48 bg-slate-900">
+                            <img src="pics/${item.photo}" alt="${item.name}" class="w-full h-full object-cover opacity-90" onerror="this.src='https://placehold.co/600x400/1e293b/ffffff?text=${item.ticker}'">
+                            <div class="absolute top-3 left-3 bg-slate-900/85 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider border border-slate-700">
+                                ${item.ticker} &bull; ${item.assetType}
+                            </div>
+                        </div>
+                        <div class="p-5 space-y-3 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-sm">${item.name}</h3>
+                                <p class="text-xs text-slate-600 mt-1 leading-relaxed"><strong class="text-slate-900">Choice Rationale:</strong> ${item.reason}</p>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100 grid grid-cols-4 gap-1.5 text-center text-xs text-slate-500 font-medium">
+                                <div class="bg-slate-50 p-1 rounded border border-slate-100">
+                                    <span class="block text-[9px] text-slate-400 uppercase">Shares</span>
+                                    <strong class="text-slate-900">${item.sharesDisplay}</strong>
+                                </div>
+                                <div class="bg-slate-50 p-1 rounded border border-slate-100">
+                                    <span class="block text-[9px] text-slate-400 uppercase">Book Price</span>
+                                    <strong class="text-slate-700">${formatCurrency(item.effectiveBookPrice)}</strong>
+                                </div>
+                                <div class="bg-slate-50 p-1 rounded border border-slate-100">
+                                    <span class="block text-[9px] text-slate-400 uppercase">Market Price</span>
+                                    <strong class="text-brand-600">${formatCurrency(item.currentPrice)}</strong>
+                                </div>
+                                <div class="bg-slate-50 p-1 rounded border border-slate-100">
+                                    <span class="block text-[9px] text-slate-400 uppercase">Monthly Div</span>
+                                    <strong class="text-emerald-700">${formatCurrency(assetMonthlyDiv)}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Calculate Ledger & KPIs
+            const ledgerTbody = document.getElementById('ledger-tbody');
+            ledgerTbody.innerHTML = adjustedHoldings.map(item => {
+                const bookVal = item.calculatedBookVal;
+                const marketVal = item.shares * item.currentPrice;
+                const gainLoss = marketVal - bookVal;
+
+                totalBookValue += bookVal;
+                totalMarketValue += marketVal;
+                totalFees += item.transactionFee;
+
+                const isPositive = gainLoss >= 0;
+
+                return `
+                    <tr>
+                        <td class="p-3 font-semibold text-slate-900">${item.name} (${item.ticker})</td>
+                        <td class="p-3 text-slate-500">${item.assetType}</td>
+                        <td class="p-3 text-center font-semibold text-slate-800">${item.sharesDisplay}</td>
+                        <td class="p-3 text-right text-slate-700">${item.bookPriceDisplay}</td>
+                        <td class="p-3 text-right text-slate-700">${formatCurrency(item.transactionFee)}</td>
+                        <td class="p-3 text-right font-semibold text-slate-900">${formatCurrency(bookVal)}</td>
+                        <td class="p-3 text-right text-slate-700">${formatCurrency(item.currentPrice)}</td>
+                        <td class="p-3 text-right font-semibold text-brand-600">${formatCurrency(marketVal)}</td>
+                        <td class="p-3 text-right font-bold ${isPositive ? 'text-emerald-600' : 'text-rose-600'}">${isPositive ? '+' : ''}${formatCurrency(gainLoss)}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const totalGainLoss = totalMarketValue - totalBookValue;
+            const totalGainLossPct = totalBookValue > 0 ? (totalGainLoss / totalBookValue) * 100 : 0;
+
+            document.getElementById('kpi-bookValue').innerText = formatCurrency(totalBookValue);
+            document.getElementById('kpi-marketValue').innerText = formatCurrency(totalMarketValue);
+            document.getElementById('kpi-cashOnHand').innerText = formatCurrency(cashOnHand);
+            document.getElementById('kpi-gainLoss').innerText = (totalGainLoss >= 0 ? '+' : '') + formatCurrency(totalGainLoss);
+            const pctEl = document.getElementById('kpi-gainLossPct');
+            pctEl.innerText = (totalGainLossPct >= 0 ? '+' : '') + totalGainLossPct.toFixed(2) + '%';
+            pctEl.className = `font-bold ${totalGainLoss >= 0 ? 'text-emerald-600' : 'text-rose-600'}`;
+            document.getElementById('kpi-dividends').innerText = formatCurrency(totalMonthlyDividend);
+
+            // Render Secondary Transactions Table
+            if (typeof PHASE2_CONFIG !== 'undefined' && PHASE2_CONFIG.secondaryTransactions) {
+                const secTbody = document.getElementById('secondary-transactions-tbody');
+                secTbody.innerHTML = PHASE2_CONFIG.secondaryTransactions.map(tx => {
+                    const isBuy = tx.action.toUpperCase() === 'BUY';
+                    return `
+                        <tr>
+                            <td class="p-3 font-bold">
+                                <span class="px-2 py-0.5 rounded text-[10px] ${isBuy ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${tx.action.toUpperCase()}</span>
+                            </td>
+                            <td class="p-3 font-semibold text-slate-900">${tx.ticker}</td>
+                            <td class="p-3 text-center font-medium">${tx.shares}</td>
+                            <td class="p-3 text-right text-slate-700">${formatCurrency(tx.transactionPrice)}</td>
+                            <td class="p-3 text-right text-slate-700">${formatCurrency(tx.transactionFee)}</td>
+                            <td class="p-3 text-slate-600">${tx.reason}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // Borrowing Cost vs Monthly Dividends Comparison
+            const monthlyBorrowingCost = (STOCK_CONFIG.borrowedPrincipal * (STOCK_CONFIG.borrowingInterestRatePct / 100)) / 12;
+            document.getElementById('total-income-amount').innerText = formatCurrency(totalMonthlyDividend);
+            document.getElementById('total-expense-amount').innerText = formatCurrency(monthlyBorrowingCost);
+
+            let incomeBreakdownHtml = adjustedHoldings.map(h => {
+                const subDiv = h.shares * h.monthlyDividendPerShare;
+                return `
+                    <div class="flex justify-between items-center py-1 border-b border-brand-100/60 text-slate-600">
+                        <span>&bull; ${h.ticker}: ${h.shares} shares × ${formatCurrency(h.monthlyDividendPerShare)}/mo</span>
+                        <span class="font-semibold text-slate-900">${formatCurrency(subDiv)}</span>
+                    </div>
+                `;
+            }).join('');
+            incomeBreakdownHtml += `
+                <div class="flex justify-between items-center py-2 font-bold text-brand-900 bg-brand-100/60 px-3 rounded-lg mt-2">
+                    <span>Total Monthly Inflows</span>
+                    <span>${formatCurrency(totalMonthlyDividend)}</span>
+                </div>
+            `;
+            document.getElementById('income-items-container').innerHTML = incomeBreakdownHtml;
+
+            document.getElementById('expense-items-container').innerHTML = `
+                <div class="flex justify-between items-center py-2 border-b border-amber-100 text-slate-700">
+                    <span>Borrowed Principal (${formatCurrency(STOCK_CONFIG.borrowedPrincipal)} @ ${STOCK_CONFIG.borrowingInterestRatePct}% p.a.)</span>
+                    <span class="font-semibold text-slate-900">${formatCurrency(monthlyBorrowingCost)}</span>
+                </div>
+                <div class="flex justify-between items-center py-2.5 font-bold text-amber-900 bg-amber-100/60 px-3 rounded-lg">
+                    <span>Total Monthly Borrowing Cost</span>
+                    <span>${formatCurrency(monthlyBorrowingCost)}</span>
+                </div>
+            `;
+
+            const netCashFlow = totalMonthlyDividend - monthlyBorrowingCost;
+            const isNetPositive = netCashFlow >= 0;
+            const banner = document.getElementById('net-cashflow-banner');
+            banner.className = `p-4 rounded-xl border flex flex-col sm:flex-row items-center justify-between text-xs font-semibold ${isNetPositive ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'}`;
+            banner.innerHTML = `
+                <div class="flex items-center gap-2 mb-2 sm:mb-0">
+                    <i class="fa-solid ${isNetPositive ? 'fa-circle-check text-emerald-600' : 'fa-triangle-exclamation text-amber-600'} text-base"></i>
+                    <span>Net Monthly Cash Flow (Dividend Inflow minus Borrowing Cost Outflow):</span>
+                </div>
+                <span class="text-sm font-black ${isNetPositive ? 'text-emerald-700' : 'text-amber-700'}">${isNetPositive ? '+' : ''}${formatCurrency(netCashFlow)} / month</span>
+            `;
+
+            if (typeof PHASE2_CONFIG !== 'undefined' && PHASE2_CONFIG.deepDiveStock) {
+                const dd = PHASE2_CONFIG.deepDiveStock;
+                document.getElementById('deepdive-title-ticker').innerText = `${dd.name} (${dd.ticker})`;
+
+                const qTbody = document.getElementById('deepdive-quarters-tbody');
+                qTbody.innerHTML = dd.quarters.map(q => `
+                    <tr>
+                        <td class="p-3 font-semibold text-slate-900">${q.period}</td>
+                        <td class="p-3 text-right font-semibold text-brand-600">${q.revenueGrowthYoy}</td>
+                        <td class="p-3 text-right font-semibold text-emerald-600">${q.ebitdaChange}</td>
+                        <td class="p-3 text-right text-slate-700">${q.debtToEquity}</td>
+                    </tr>
+                `).join('');
+
+                document.getElementById('target-price-val').innerText = formatCurrency(dd.target1Year);
+                document.getElementById('target-upside-val').innerText = `${dd.upsidePotentialPct} Upside`;
+                document.getElementById('target-downside-val').innerText = dd.downsideRiskPct;
+                document.getElementById('target-consensus-val').innerText = dd.analystConsensus;
+                document.getElementById('target-rationale-text').innerText = dd.predictionRationale;
+
+                document.getElementById('ichimoku-status-badge').innerText = dd.ichimokuAnalysis.status;
+                document.getElementById('ichimoku-desc-text').innerText = dd.ichimokuAnalysis.description;
+                document.getElementById('gonogo-status-badge').innerText = dd.goNoGoAnalysis.status;
+                document.getElementById('gonogo-desc-text').innerText = dd.goNoGoAnalysis.description;
+            }
+
+            if (STOCK_CONFIG.swotAnalysis) {
+                document.getElementById('swot-s-title').innerText = STOCK_CONFIG.swotAnalysis.strengthsTitle;
+                document.getElementById('swot-s-text').innerText = STOCK_CONFIG.swotAnalysis.strengthsText;
+                document.getElementById('swot-w-title').innerText = STOCK_CONFIG.swotAnalysis.weaknessesTitle;
+                document.getElementById('swot-w-text').innerText = STOCK_CONFIG.swotAnalysis.weaknessesText;
+                document.getElementById('swot-o-title').innerText = STOCK_CONFIG.swotAnalysis.opportunitiesTitle;
+                document.getElementById('swot-o-text').innerText = STOCK_CONFIG.swotAnalysis.opportunitiesText;
+                document.getElementById('swot-t-title').innerText = STOCK_CONFIG.swotAnalysis.threatsTitle;
+                document.getElementById('swot-t-text').innerText = STOCK_CONFIG.swotAnalysis.threatsText;
+            }
+
+            renderCharts(adjustedHoldings, cashOnHand);
+        }
+
+        function renderCharts(holdingsData, cashOnHand) {
+            let tickers = holdingsData.map(h => h.ticker);
+            let marketValues = holdingsData.map(h => h.shares * h.currentPrice);
+            const bookValues = holdingsData.map(h => h.calculatedBookVal);
+
+            let colors = ['#22c55e', '#3b82f6', '#f59e0b', '#ec4899', '#6366f1'];
+            if (cashOnHand > 0) {
+                tickers.push("CASH");
+                marketValues.push(cashOnHand);
+            }
+
+            const ctxAlloc = document.getElementById('allocationChart').getContext('2d');
+            if (allocationChartInstance) allocationChartInstance.destroy();
+
+            allocationChartInstance = new Chart(ctxAlloc, {
+                type: 'doughnut',
+                data: {
+                    labels: tickers,
+                    datasets: [{
+                        data: marketValues,
+                        backgroundColor: colors,
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
+                }
+            });
+
+            const compTickers = holdingsData.map(h => h.ticker);
+            const ctxComp = document.getElementById('comparisonChart').getContext('2d');
+            if (comparisonChartInstance) comparisonChartInstance.destroy();
+
+            comparisonChartInstance = new Chart(ctxComp, {
+                type: 'bar',
+                data: {
+                    labels: compTickers,
+                    datasets: [
+                        { label: 'Book Value ($)', data: bookValues, backgroundColor: '#94a3b8', borderRadius: 6 },
+                        { label: 'Market Value ($)', data: holdingsData.map(h => h.shares * h.currentPrice), backgroundColor: '#22c55e', borderRadius: 6 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } },
+                    scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } }
+                }
+            });
+        }
+
+        window.onload = function () {
+            runStockModel();
+        };
+    </script>
+</body>
+
+</html>

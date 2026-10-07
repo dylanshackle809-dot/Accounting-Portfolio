@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Accounting Portfolio Showcase</title>
+    <!-- Dynamic Favicon -->
+    <link id="dynamic-favicon" rel="icon" type="image/png" href="">
+
+    <!-- External Data Files -->
+    <script src="index-data.js"></script>
+
+    <!-- Dynamic Title & Favicon Setup -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof STUDENT_CONFIG !== 'undefined') {
+                const studentName = STUDENT_CONFIG.firstName ? `${STUDENT_CONFIG.firstName} ${STUDENT_CONFIG.lastName || ''}`.trim() : (STUDENT_CONFIG.studentName || STUDENT_CONFIG.studentAuthor || '');
+                const courseName = STUDENT_CONFIG.courseName || '';
+                if (studentName && courseName) {
+                    document.title = `${studentName} - ${courseName}`;
+                }
+                if (STUDENT_CONFIG.avatarUrl) {
+                    const faviconEl = document.getElementById('dynamic-favicon');
+                    if (faviconEl) {
+                        faviconEl.href = "pics/" + STUDENT_CONFIG.avatarUrl;
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- ========================================================================= -->
+    <!-- CONFIGURATION AREA (EDIT HERE FOR DIFFERENT PAGES) -->
+    <!-- ========================================================================= -->
+    <script src="final-project-data.js"></script>
+    <script>
+    </script>
+    <!-- ========================================================================= -->
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-full flex flex-col">
+
+    <!-- Header Section -->
+    <header class="bg-slate-900 text-white shadow-md border-b border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div id="header-avatar-container"
+                    class="bg-brand-500 text-white rounded-xl shadow-lg overflow-hidden w-12 h-12 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-file-invoice-dollar text-xl" id="header-icon"></i>
+                </div>
+                <div>
+                    <span id="header-business"
+                        class="text-xs font-semibold text-brand-400 uppercase tracking-widest">Business Name</span>
+                    <h1 id="header-title" class="text-xl font-bold tracking-tight">Financial Portfolio</h1>
+                    <p id="header-subtitle" class="text-xs text-slate-400">Accounting Student Portfolio</p>
+                </div>
+            </div>
+
+            <!-- Back to Home Link -->
+            <div class="flex items-center gap-3">
+                <a href="index.html"
+                    class="px-4 py-2 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left text-brand-400"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- ========================================== -->
+        <!-- STUDENT REFLECTION CARDS (2 PER ROW GRID)  -->
+        <!-- ========================================== -->
+        <section class="space-y-4">
+            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-brand-600"></i> Student Reflections & Analysis
+                </h3>
+                <span class="text-xs text-slate-400">Project Review & Learning Outcomes</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="reflections-container">
+                <!-- Dynamically populated via script from PAGE_CONFIG.reflections -->
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- STORYBOARD CAROUSEL SECTION                -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-clapperboard text-brand-600"></i> Storyboard Showcase
+                </h3>
+                <div class="flex gap-1.5" id="carousel-dots-storyboard"></div>
+            </div>
+
+            <div
+                class="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-900 min-h-[380px] flex items-center justify-center shadow-inner">
+                <div id="carousel-storyboard-slides-container" class="absolute inset-0 w-full h-full"></div>
+
+                <button onclick="prevStoryboardSlide()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Previous Slide">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button onclick="nextStoryboardSlide()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Next Slide">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- YOUTUBE / YOUTUBE SHORT EMBED SECTION      -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-brands fa-youtube text-red-600"></i> <span id="youtube-section-title">Project Video
+                        Presentation</span>
+                </h3>
+                <span id="youtube-badge"
+                    class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-semibold">Video Showcase</span>
+            </div>
+
+            <p id="youtube-section-desc" class="text-xs text-slate-600">Watch the student presentation walkthrough
+                below.</p>
+
+            <div id="youtube-embed-wrapper"
+                class="w-full flex justify-center bg-slate-900 rounded-xl overflow-hidden border border-slate-200 shadow-inner">
+                <!-- Dynamically injected iframe depending on regular or short aspect ratio -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            Accounting Student Portfolio &bull; Placeholder Template &bull; Interactive Financial Module
+        </div>
+    </footer>
+
+    <!-- Initialization Script -->
+    <script>
+        // Storyboard Carousel State
+        let currentStoryboardIndex = 0;
+        let totalStoryboardSlides = 0;
+
+        function showStoryboardSlide(index) {
+            if (totalStoryboardSlides === 0) return;
+            currentStoryboardIndex = (index + totalStoryboardSlides) % totalStoryboardSlides;
+            for (let i = 0; i < totalStoryboardSlides; i++) {
+                const slide = document.getElementById(`storyboard-slide-${i}`);
+                const dot = document.getElementById(`dot-storyboard-${i}`);
+                if (slide && dot) {
+                    if (i === currentStoryboardIndex) {
+                        slide.classList.remove('opacity-0', 'z-0');
+                        slide.classList.add('opacity-100', 'z-10');
+                        dot.classList.remove('bg-slate-300');
+                        dot.classList.add('bg-brand-600', 'w-5');
+                    } else {
+                        slide.classList.remove('opacity-100', 'z-10');
+                        slide.classList.add('opacity-0', 'z-0');
+                        dot.classList.remove('bg-brand-600', 'w-5');
+                        dot.classList.add('bg-slate-300');
+                    }
+                }
+            }
+        }
+
+        function nextStoryboardSlide() { showStoryboardSlide(currentStoryboardIndex + 1); }
+        function prevStoryboardSlide() { showStoryboardSlide(currentStoryboardIndex - 1); }
+
+        // Helper function to extract YouTube ID and determine type (regular vs short)
+        function renderYouTubeEmbed() {
+            const config = PAGE_CONFIG.videoConfig || {};
+            if (!config.url) return;
+
+            if (config.title) {
+                document.getElementById('youtube-section-title').innerText = config.title;
+            }
+            if (config.description) {
+                document.getElementById('youtube-section-desc').innerText = config.description;
+            }
+
+            let videoId = '';
+            let isShort = false;
+
+            const url = config.url;
+            if (url.includes('shorts/')) {
+                isShort = true;
+                const match = url.match(/\/shorts\/([a-zA-Z0-9_-]+)/);
+                if (match) videoId = match[1];
+            } else if (url.includes('youtu.be/')) {
+                const match = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+                if (match) videoId = match[1];
+            } else if (url.includes('watch?v=')) {
+                const match = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+                if (match) videoId = match[1];
+            }
+
+            // Fallback / manual override via videoType config field ('regular' or 'short')
+            if (config.videoType === 'short') {
+                isShort = true;
+            } else if (config.videoType === 'regular') {
+                isShort = false;
+            }
+
+            const wrapper = document.getElementById('youtube-embed-wrapper');
+            const badge = document.getElementById('youtube-badge');
+
+            if (videoId) {
+                if (isShort) {
+                    badge.innerText = "YouTube Short";
+                    wrapper.innerHTML = `
+                        <div class="relative w-full max-w-xs h-[500px]">
+                            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/${videoId}" title="YouTube Short Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                    `;
+                } else {
+                    badge.innerText = "YouTube Video";
+                    wrapper.innerHTML = `
+                        <div class="relative w-full aspect-video">
+                            <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/${videoId}" title="YouTube Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                    `;
+                }
+            } else {
+                wrapper.innerHTML = `<div class="p-8 text-slate-400 text-xs text-center">Invalid YouTube URL provided in PAGE_CONFIG.videoConfig</div>`;
+            }
+        }
+
+        function initPage() {
+            // Load student avatar into header if available in index-data.js
+            if (typeof STUDENT_CONFIG !== 'undefined' && STUDENT_CONFIG.avatarUrl) {
+                const avatarContainer = document.getElementById('header-avatar-container');
+                if (avatarContainer) {
+                    avatarContainer.innerHTML = `<img src="pics/${STUDENT_CONFIG.avatarUrl}" alt="Avatar" class="w-full h-full object-cover">`;
+                }
+            }
+
+            document.getElementById('header-business').innerText = PAGE_CONFIG.businessName;
+            document.getElementById('header-title').innerText = PAGE_CONFIG.moduleTitle;
+            document.getElementById('header-subtitle').innerText = PAGE_CONFIG.pageSubtitle + " | " + PAGE_CONFIG.studentAuthor;
+
+            // Populate Reflections Section (2 items per row grid, with the 5th item spanning full width if desired or fitting neatly)
+            const reflectionsContainer = document.getElementById('reflections-container');
+            const reflections = PAGE_CONFIG.reflections || [];
+            if (reflectionsContainer && reflections.length > 0) {
+                reflectionsContainer.innerHTML = reflections.map((item, idx) => `
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between space-y-3 ${idx === 4 ? 'md:col-span-2 bg-gradient-to-br from-white via-slate-50 to-brand-50/30' : ''}">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-brand-600">${item.subtitle}</span>
+                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-semibold">${idx === 4 ? 'Tech Tip' : 'Reflection 0' + (idx + 1)}</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                <i class="fa-solid ${idx === 4 ? 'fa-wand-magic-sparkles text-brand-600' : 'fa-circle-chevron-right text-brand-600'} text-xs"></i> ${item.title}
+                            </h4>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-100">${item.content}</p>
+                    </div>
+                `).join('');
+            }
+
+            // Populate Storyboard Carousel
+            const storyboardSlides = PAGE_CONFIG.storyboardSlides || [];
+            totalStoryboardSlides = storyboardSlides.length;
+
+            const storyboardContainer = document.getElementById('carousel-storyboard-slides-container');
+            const storyboardDotsContainer = document.getElementById('carousel-dots-storyboard');
+
+            if (totalStoryboardSlides > 0) {
+                storyboardContainer.innerHTML = storyboardSlides.map((item, i) => `
+                    <div class="carousel-slide absolute inset-0 transition-opacity duration-500 ${i === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}" id="storyboard-slide-${i}">
+                        <img src="pics/${item.image}" alt="${item.title}" class="w-full h-full object-cover absolute inset-0 opacity-40" onerror="this.style.display='none'">
+                        
+                        <div class="absolute bottom-3 left-3 z-30 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-300 text-slate-900 text-[11px] font-bold flex items-center gap-1.5 shadow-md">
+                            <i class="fa-solid fa-image text-brand-600"></i> ${item.badge || 'Storyboard ' + (i + 1)}
+                        </div>
+
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/80 to-slate-900/50 p-8 flex flex-col justify-end text-white backdrop-blur-2xs">
+                            <div class="max-w-lg space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-brand-400 font-extrabold bg-brand-950/80 px-2.5 py-0.5 rounded-md border border-brand-800/50">${item.badge || 'Storyboard ' + (i + 1)}</span>
+                                    <span class="text-[10px] text-slate-400">Slide ${i + 1} of ${totalStoryboardSlides}</span>
+                                </div>
+                                <h3 class="text-xl font-black tracking-tight">${item.title}</h3>
+                                <p class="text-xs text-slate-300 leading-relaxed">${item.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                storyboardDotsContainer.innerHTML = storyboardSlides.map((_, i) => `
+                    <button onclick="showStoryboardSlide(${i})" class="w-3 h-3 rounded-full ${i === 0 ? 'bg-brand-600 w-5' : 'bg-slate-300'} transition-all" id="dot-storyboard-${i}" aria-label="Slide ${i + 1}"></button>
+                `).join('');
+            }
+
+            // Render YouTube Embed
+            renderYouTubeEmbed();
+        }
+
+        window.onload = initPage;
+    </script>
+</body>
+
+</html>

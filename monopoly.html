@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Dynamic Title using STUDENT_CONFIG from index-data.js -->
+    <title>Monopoly Accounting Transactions Showcase</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof STUDENT_CONFIG !== 'undefined') {
+                document.title = `${STUDENT_CONFIG.firstName} - ${STUDENT_CONFIG.courseName}`;
+                if (STUDENT_CONFIG.avatarUrl) {
+                    document.getElementById('dynamic-favicon').href = "pics/" + STUDENT_CONFIG.avatarUrl;
+                }
+            }
+        });
+    </script>
+
+    <!-- Dynamic Favicon -->
+    <link id="dynamic-favicon" rel="icon" type="image/png" href="">
+
+    <!-- External Data Files -->
+    <script src="index-data.js"></script>
+    <script src="monopoly-data.js"></script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: 'var(--brand-50, #f0fdf4)',
+                            100: 'var(--brand-100, #dcfce7)',
+                            500: 'var(--brand-500, #22c55e)',
+                            600: 'var(--brand-600, #16a34a)',
+                            700: 'var(--brand-700, #15803d)',
+                            900: 'var(--brand-900, #14532d)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="page-body" class="theme-emerald min-h-full flex flex-col bg-slate-50 text-slate-900">
+
+    <header class="portfolio-header py-6 px-8 bg-slate-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div id="header-avatar-container"
+                    class="rounded-xl shadow-lg overflow-hidden w-12 h-12 flex items-center justify-center bg-slate-800 shrink-0">
+                    <i class="fa-solid fa-dice text-xl text-brand-400" id="header-icon"></i>
+                </div>
+                <div>
+                    <span id="header-business"
+                        class="text-xs font-semibold text-brand-400 uppercase tracking-widest">Business Name</span>
+                    <h1 id="header-title" class="text-xl font-bold tracking-tight">Monopoly Financial Showcase</h1>
+                    <p id="header-subtitle" class="text-xs text-slate-400">Student Accounting Portfolio - Monopoly
+                        Simulation</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html"
+                    class="px-4 py-2 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left text-brand-400"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Introduction Section -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-3">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-book-open text-brand-600"></i> Monopoly Transaction Ledger & General Accounting
+                Simulation
+            </h2>
+            <p class="text-xs text-slate-600 leading-relaxed">
+                Explore standard board game financial events mapped directly to double-entry bookkeeping principles.
+                Inspect transactions, general journals, account ledgers, trial balances, and financial statements below.
+            </p>
+        </section>
+
+        <!-- TRANSACTIONS AND EFFECTING ACCOUNTS SECTION -->
+        <section class="space-y-4">
+            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-brand-600"></i> Transactions and Effecting Accounts
+                </h3>
+                <span class="text-xs text-slate-400">Click card to toggle details</span>
+            </div>
+
+            <div id="monopoly-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Populated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- GENERAL JOURNALS SECTION WITH SLIDER ACCORDION -->
+        <section class="space-y-4 pt-4">
+            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-book text-brand-600"></i> General Journal
+                </h3>
+                <span class="text-xs text-slate-400">Multi-page archive slider</span>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div onclick="toggleJournalAccordion()"
+                    class="p-4 bg-slate-900 text-white flex items-center justify-between cursor-pointer hover:bg-slate-800 transition">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-brand-500 text-white p-2 rounded-lg">
+                            <i class="fa-solid fa-book text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">General Journals Archive (Multi-Page Slider)</h3>
+                            <p class="text-[11px] text-slate-400">Click to expand and slide through recorded journal
+                                entries</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800 p-2 rounded-lg border border-slate-700">
+                        <i id="journal-icon" class="fa-solid fa-chevron-down text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Accordion Content -->
+                <div id="journal-accordion-content" class="hidden p-6 bg-slate-50 space-y-4">
+                    <div class="flex items-center justify-between text-xs font-semibold text-slate-600">
+                        <span id="journal-counter">Page 1 of 3</span>
+                        <div class="flex gap-2">
+                            <button onclick="slideJournal(-1)"
+                                class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 transition flex items-center gap-1">
+                                <i class="fa-solid fa-arrow-left text-[10px]"></i> Previous
+                            </button>
+                            <button onclick="slideJournal(1)"
+                                class="px-3 py-1.5 bg-brand-600 text-white rounded-lg shadow-sm hover:bg-brand-700 transition flex items-center gap-1">
+                                Next <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Slider Image Container -->
+                    <div
+                        class="w-full bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shadow-inner p-3 relative flex items-center justify-center">
+                        <img id="active-journal-img" src="" alt="General Journal Page"
+                            class="w-full h-auto min-h-[160px] object-contain opacity-95 rounded"
+                            onerror="this.src='https://placehold.co/800x200/0f172a/38bdf8?text=General+Journal+Placeholder'">
+                        <div
+                            class="absolute bottom-3 left-3 bg-slate-950/85 text-white px-3 py-1 rounded-md text-xs font-mono border border-slate-700 shadow">
+                            File: <span id="journal-filename">journal-page-1.png</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACCOUNTS LEDGERS SECTION -->
+        <section class="space-y-4 pt-4">
+            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-wallet text-brand-600"></i> Ledger Accounts (Full-Width Accordions)
+                </h3>
+                <span class="text-xs text-slate-400">Click any account to view ledger entries</span>
+            </div>
+
+            <div id="accounts-grid" class="space-y-3">
+                <!-- Populated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- REPORTS SECTION -->
+        <section class="space-y-4 pt-4">
+            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice-dollar text-brand-600"></i> Reports
+                </h3>
+                <span class="text-xs text-slate-400">Trial balance and financial statements</span>
+            </div>
+
+            <div class="space-y-3">
+                <!-- TRIAL BALANCE SECTION (PRE/POST CLOSING SLIDER ACCORDION) -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div onclick="toggleTrialBalanceAccordion()"
+                        class="p-4 bg-slate-900 text-white flex items-center justify-between cursor-pointer hover:bg-slate-800 transition">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-brand-500 text-white p-2 rounded-lg">
+                                <i class="fa-solid fa-balance-scale text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Trial Balance (Pre-Closing & Post-Closing)</h3>
+                                <p class="text-[11px] text-slate-400">Click to expand and inspect pre- and post-closing
+                                    trial balance reports</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 p-2 rounded-lg border border-slate-700">
+                            <i id="tb-icon" class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Content -->
+                    <div id="tb-accordion-content" class="hidden p-6 bg-slate-50 space-y-4">
+                        <div class="flex items-center justify-between text-xs font-semibold text-slate-600">
+                            <div>
+                                <span id="tb-title" class="font-bold text-slate-800 text-sm">Pre-Closing Trial
+                                    Balance</span>
+                                <p id="tb-desc" class="text-[11px] text-slate-500 mt-0.5">Description goes here</p>
+                            </div>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="slideTrialBalance(-1)"
+                                    class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg shadow-sm hover:bg-slate-100 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-arrow-left text-[10px]"></i> Previous
+                                </button>
+                                <button onclick="slideTrialBalance(1)"
+                                    class="px-3 py-1.5 bg-brand-600 text-white rounded-lg shadow-sm hover:bg-brand-700 transition flex items-center gap-1">
+                                    Next <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Slider Image Container -->
+                        <div
+                            class="w-full bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shadow-inner p-3 relative flex items-center justify-center">
+                            <img id="active-tb-img" src="" alt="Trial Balance Version"
+                                class="w-full h-auto min-h-[160px] object-contain opacity-95 rounded"
+                                onerror="this.src='https://placehold.co/800x200/0f172a/38bdf8?text=Trial+Balance+Placeholder'">
+                            <div
+                                class="absolute bottom-3 left-3 bg-slate-950/85 text-white px-3 py-1 rounded-md text-xs font-mono border border-slate-700 shadow">
+                                File: <span id="tb-filename">trial-balance-pre.png</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INCOME STATEMENT SECTION -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div onclick="toggleIncomeStatementAccordion()"
+                        class="p-4 bg-slate-900 text-white flex items-center justify-between cursor-pointer hover:bg-slate-800 transition">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-brand-500 text-white p-2 rounded-lg">
+                                <i class="fa-solid fa-chart-line text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Income Statement</h3>
+                                <p class="text-[11px] text-slate-400">Click to expand and view revenues, expenses, and
+                                    net profit</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 p-2 rounded-lg border border-slate-700">
+                            <i id="is-icon" class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Content -->
+                    <div id="is-accordion-content" class="hidden p-6 bg-slate-50 space-y-4">
+                        <p id="is-desc" class="text-xs text-slate-700">Description goes here</p>
+                        <div
+                            class="w-full bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shadow-inner p-3 relative flex items-center justify-center">
+                            <img id="is-img" src="" alt="Income Statement"
+                                class="w-full h-auto min-h-[160px] object-contain opacity-95 rounded"
+                                onerror="this.src='https://placehold.co/800x200/0f172a/38bdf8?text=Income+Statement+Placeholder'">
+                            <div
+                                class="absolute bottom-3 left-3 bg-slate-950/85 text-white px-3 py-1 rounded-md text-xs font-mono border border-slate-700 shadow">
+                                File: <span id="is-filename">income-statement.png</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BALANCE SHEET SECTION -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div onclick="toggleBalanceSheetAccordion()"
+                        class="p-4 bg-slate-900 text-white flex items-center justify-between cursor-pointer hover:bg-slate-800 transition">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-brand-500 text-white p-2 rounded-lg">
+                                <i class="fa-solid fa-scale-balanced text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Balance Sheet</h3>
+                                <p class="text-[11px] text-slate-400">Click to expand and inspect assets, liabilities,
+                                    and equity totals</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 p-2 rounded-lg border border-slate-700">
+                            <i id="bs-icon" class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Content -->
+                    <div id="bs-accordion-content" class="hidden p-6 bg-slate-50 space-y-4">
+                        <p id="bs-desc" class="text-xs text-slate-700">Description goes here</p>
+                        <div
+                            class="w-full bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shadow-inner p-3 relative flex items-center justify-center">
+                            <img id="bs-img" src="" alt="Balance Sheet"
+                                class="w-full h-auto min-h-[160px] object-contain opacity-95 rounded"
+                                onerror="this.src='https://placehold.co/800x200/0f172a/38bdf8?text=Balance+Sheet+Placeholder'">
+                            <div
+                                class="absolute bottom-3 left-3 bg-slate-950/85 text-white px-3 py-1 rounded-md text-xs font-mono border border-slate-700 shadow">
+                                File: <span id="bs-filename">balance-sheet.png</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="portfolio-header py-6 mt-auto text-center text-xs text-slate-500 bg-slate-900 text-slate-400">
+        <div class="max-w-7xl mx-auto px-4">
+            Monopoly Accounting Portfolio Showcase &bull; Designed for Accounting Students &bull; Interactive Ledger
+            Matrix
+        </div>
+    </footer>
+
+    <!-- Main Application Script -->
+    <script>
+        const THEME_PALETTES = {
+            emerald: { '50': '#f0fdf4', '100': '#dcfce7', '500': '#22c55e', '600': '#16a34a', '700': '#15803d', '900': '#14532d' },
+            indigo: { '50': '#eef2ff', '100': '#e0e7ff', '500': '#6366f1', '600': '#4f46e5', '700': '#4338ca', '900': '#312e81' },
+            blue: { '50': '#eff6ff', '100': '#dbeafe', '500': '#3b82f6', '600': '#2563eb', '700': '#1d4ed8', '900': '#1e3a8a' },
+            violet: { '50': '#f5f3ff', '100': '#ede9fe', '500': '#8b5cf6', '600': '#7c3aed', '700': '#6d28d9', '900': '#4c1d95' },
+            amber: { '50': '#fffbeb', '100': '#fef3c7', '500': '#f59e0b', '600': '#d97706', '700': '#b45309', '900': '#78350f' }
+        };
+
+        const ACCOUNT_TYPE_STYLES = {
+            asset: {
+                barBg: 'bg-blue-950 border-blue-900/60 hover:bg-blue-900/80',
+                badge: 'bg-blue-500/20 text-blue-300 border-blue-500/40',
+                iconBg: 'bg-blue-500/20 text-blue-300 border-blue-500/40',
+                chevronBg: 'bg-blue-900 border-blue-800 text-blue-300'
+            },
+            liability: {
+                barBg: 'bg-amber-950 border-amber-900/60 hover:bg-amber-900/80',
+                badge: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+                iconBg: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+                chevronBg: 'bg-amber-900 border-amber-800 text-amber-300'
+            },
+            equity: {
+                barBg: 'bg-purple-950 border-purple-900/60 hover:bg-purple-900/80',
+                badge: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+                iconBg: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+                chevronBg: 'bg-purple-900 border-purple-800 text-purple-300'
+            },
+            income: {
+                barBg: 'bg-emerald-950 border-emerald-900/60 hover:bg-emerald-900/80',
+                badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+                iconBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+                chevronBg: 'bg-emerald-900 border-emerald-800 text-emerald-300'
+            },
+            expenses: {
+                barBg: 'bg-rose-950 border-rose-900/60 hover:bg-rose-900/80',
+                badge: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+                iconBg: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+                chevronBg: 'bg-rose-900 border-rose-800 text-rose-300'
+            }
+        };
+
+        let currentJournalIndex = 0;
+        let currentTrialBalanceIndex = 0;
+
+        function applyTheme(themeName) {
+            const palette = THEME_PALETTES[themeName] || THEME_PALETTES.emerald;
+            const root = document.documentElement;
+            for (const [key, val] of Object.entries(palette)) {
+                root.style.setProperty(`--brand-${key}`, val);
+            }
+            document.getElementById('page-body').className = `theme-${themeName} min-h-full flex flex-col bg-slate-50 text-slate-900`;
+        }
+
+        function toggleJournalAccordion() {
+            const content = document.getElementById('journal-accordion-content');
+            const icon = document.getElementById('journal-icon');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                updateJournalDisplay();
+            } else {
+                content.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        function slideJournal(direction) {
+            const pages = MONOPOLY_CONFIG.journalPages;
+            currentJournalIndex = (currentJournalIndex + direction + pages.length) % pages.length;
+            updateJournalDisplay();
+        }
+
+        function updateJournalDisplay() {
+            const pages = MONOPOLY_CONFIG.journalPages;
+            const imgEl = document.getElementById('active-journal-img');
+            const filenameEl = document.getElementById('journal-filename');
+            const counterEl = document.getElementById('journal-counter');
+
+            const currentFile = pages[currentJournalIndex] || "journal-page-1.png";
+            imgEl.src = `pics/${currentFile}`;
+            filenameEl.innerText = currentFile;
+            counterEl.innerText = `Page ${currentJournalIndex + 1} of ${pages.length}`;
+        }
+
+        function toggleTrialBalanceAccordion() {
+            const content = document.getElementById('tb-accordion-content');
+            const icon = document.getElementById('tb-icon');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                updateTrialBalanceDisplay();
+            } else {
+                content.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        function slideTrialBalance(direction) {
+            const tbPages = MONOPOLY_CONFIG.trialBalancePages;
+            currentTrialBalanceIndex = (currentTrialBalanceIndex + direction + tbPages.length) % tbPages.length;
+            updateTrialBalanceDisplay();
+        }
+
+        function updateTrialBalanceDisplay() {
+            const tbPages = MONOPOLY_CONFIG.trialBalancePages;
+            const currentObj = tbPages[currentTrialBalanceIndex] || tbPages[0];
+
+            document.getElementById('tb-title').innerText = currentObj.title;
+            document.getElementById('tb-desc').innerText = currentObj.desc;
+            document.getElementById('active-tb-img').src = `pics/${currentObj.file}`;
+            document.getElementById('tb-filename').innerText = currentObj.file;
+        }
+
+        function toggleIncomeStatementAccordion() {
+            const content = document.getElementById('is-accordion-content');
+            const icon = document.getElementById('is-icon');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+
+                const isData = MONOPOLY_CONFIG.incomeStatement;
+                document.getElementById('is-desc').innerText = isData.desc;
+                document.getElementById('is-img').src = `pics/${isData.file}`;
+                document.getElementById('is-filename').innerText = isData.file;
+            } else {
+                content.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        function toggleBalanceSheetAccordion() {
+            const content = document.getElementById('bs-accordion-content');
+            const icon = document.getElementById('bs-icon');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+
+                const bsData = MONOPOLY_CONFIG.balanceSheet;
+                document.getElementById('bs-desc').innerText = bsData.desc;
+                document.getElementById('bs-img').src = `pics/${bsData.file}`;
+                document.getElementById('bs-filename').innerText = bsData.file;
+            } else {
+                content.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(`accordion-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        function toggleAccountAccordion(id) {
+            const content = document.getElementById(`account-content-${id}`);
+            const icon = document.getElementById(`account-icon-${id}`);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        function initMonopolyPage() {
+            // Load avatar from STUDENT_CONFIG matching portfolio standards
+            if (typeof STUDENT_CONFIG !== 'undefined' && STUDENT_CONFIG.avatarUrl) {
+                const avatarContainer = document.getElementById('header-avatar-container');
+                if (avatarContainer) {
+                    avatarContainer.innerHTML = `<img src="pics/${STUDENT_CONFIG.avatarUrl}" alt="Avatar" class="w-full h-full object-cover">`;
+                }
+            }
+
+            applyTheme(MONOPOLY_CONFIG.theme);
+            document.getElementById('header-business').innerText = MONOPOLY_CONFIG.businessName;
+            document.getElementById('header-title').innerText = MONOPOLY_CONFIG.portfolioName;
+            document.getElementById('header-subtitle').innerText = MONOPOLY_CONFIG.studentAuthor + " (Monopoly Simulation)";
+
+            // Populate Transactions Grid
+            const grid = document.getElementById('monopoly-grid');
+            grid.innerHTML = MONOPOLY_CONFIG.transactions.map(tx => `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                    <div onclick="toggleAccordion('${tx.id}')" class="w-full bg-slate-900 cursor-pointer group p-2 flex items-center justify-center">
+                        <img src="pics/${tx.photo}" alt="${tx.title}" class="w-full h-auto min-h-[120px] object-contain opacity-85 group-hover:opacity-100 transition rounded" onerror="this.src='https://placehold.co/600x150/1e293b/ffffff?text=${encodeURIComponent(tx.title)}'">
+                    </div>
+                    <div onclick="toggleAccordion('${tx.id}')" class="px-4 py-3 bg-slate-900 text-white flex items-center justify-between cursor-pointer border-t border-slate-800">
+                        <div>
+                            <h4 class="font-bold text-sm text-white">${tx.title}</h4>
+                            <div class="flex flex-wrap items-center gap-1.5 mt-1 text-[10px] font-semibold">
+                                <span class="px-2 py-0.5 rounded-md bg-brand-600 text-white shadow-sm border border-brand-500">DR: ${tx.drAccount}</span>
+                                <span class="px-2 py-0.5 rounded-md bg-amber-600 text-white shadow-sm border border-amber-500">CR: ${tx.crAccount}</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 p-2 rounded-lg border border-slate-700 shrink-0 shadow-sm">
+                            <i id="icon-${tx.id}" class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+
+                    <div id="accordion-${tx.id}" class="hidden p-4 space-y-3 border-t border-slate-100 bg-slate-50/50">
+                        <p class="text-xs text-slate-700 leading-relaxed">
+                            <strong>Sample Description:</strong> ${tx.description}
+                        </p>
+                        <div class="space-y-1.5">
+                            <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Sample Transaction Screenshot</span>
+                            <div class="w-full bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shadow-inner p-3 flex items-center justify-center">
+                                <img src="pics/${tx.photo}" alt="Screenshot for ${tx.title}" class="w-full h-auto min-h-[140px] object-contain opacity-95 rounded" onerror="this.src='https://placehold.co/600x200/0f172a/38bdf8?text=Transaction+Screenshot'">
+                            </div>
+                            <p class="text-[11px] text-center text-slate-500 font-mono italic">${tx.samplePicText}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Populate Accounts Ledgers List
+            const accountsContainer = document.getElementById('accounts-grid');
+            accountsContainer.innerHTML = MONOPOLY_CONFIG.accounts.map(acc => {
+                const style = ACCOUNT_TYPE_STYLES[acc.accountType] || {
+                    barBg: 'bg-slate-900 border-slate-800 hover:bg-slate-800',
+                    badge: 'bg-slate-500/20 text-slate-300 border-slate-500/40',
+                    iconBg: 'bg-slate-500/20 text-slate-300 border-slate-500/40',
+                    chevronBg: 'bg-slate-800 border-slate-700 text-slate-300'
+                };
+                const typeLabel = acc.accountType ? acc.accountType.toUpperCase() : 'GENERAL';
+
+                return `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div onclick="toggleAccountAccordion('${acc.id}')" class="p-4 ${style.barBg} text-white flex items-center justify-between cursor-pointer border transition">
+                        <div class="flex items-center gap-3">
+                            <div class="${style.iconBg} p-2.5 rounded-lg border shrink-0 flex items-center justify-center">
+                                <i class="fa-solid fa-file-invoice-dollar text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="font-mono text-xs font-bold text-slate-300">${acc.accountNumber || '0000'}</span>
+                                    <h4 class="font-bold text-sm text-white">${acc.name} </h4>
+                                    <span class="text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${style.badge}">${typeLabel}</span>
+                                </div>
+                                <p class="text-[11px] text-slate-300 mt-0.5">${acc.desc}</p>
+                            </div>
+                        </div>
+                        <div class="${style.chevronBg} p-2 rounded-lg border shrink-0">
+                            <i id="account-icon-${acc.id}" class="fa-solid fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+
+                    <div id="account-content-${acc.id}" class="hidden p-5 bg-slate-50/50 border-t border-slate-100 space-y-3">
+                        <p class="text-xs text-slate-700"><strong>Account Overview:</strong> ${acc.desc}</p>
+                        <div class="space-y-1.5">
+                            <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Full-Width Resulting Account Entries Proof</span>
+                            <div class="w-full bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shadow-inner p-3 flex items-center justify-center">
+                                <img src="pics/${acc.photo}" alt="${acc.name} Ledger" class="w-full h-auto min-h-[160px] object-contain opacity-95 rounded" onerror="this.src='https://placehold.co/800x200/0f172a/38bdf8?text=${encodeURIComponent(acc.name)}+Ledger+Entries'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        window.onload = function () {
+            initMonopolyPage();
+        };
+    </script>
+</body>
+
+</html>

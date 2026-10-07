@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Business Showcase</title>
+    <!-- Dynamic Favicon -->
+    <link id="dynamic-favicon" rel="icon" type="image/png" href="">
+
+    <!-- External Data Files -->
+    <script src="index-data.js"></script>
+    <script src="service-business-data.js"></script>
+
+    <script>
+        // Set dynamic document title and favicon using index-data.js (STUDENT_CONFIG)
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof STUDENT_CONFIG !== 'undefined') {
+                const studentName = STUDENT_CONFIG.firstName ? `${STUDENT_CONFIG.firstName} ${STUDENT_CONFIG.lastName || ''}`.trim() : (STUDENT_CONFIG.studentName || STUDENT_CONFIG.studentAuthor || '');
+                const courseName = STUDENT_CONFIG.courseName || '';
+                if (studentName && courseName) {
+                    document.title = `${studentName} - ${courseName} (Service Business)`;
+                }
+                if (STUDENT_CONFIG.avatarUrl) {
+                    document.getElementById('dynamic-favicon').href = "pics/" + STUDENT_CONFIG.avatarUrl;
+                }
+            }
+        });
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: 'var(--brand-50, #f0fdf4)',
+                            100: 'var(--brand-100, #dcfce7)',
+                            500: 'var(--brand-500, #22c55e)',
+                            600: 'var(--brand-600, #16a34a)',
+                            700: 'var(--brand-700, #15803d)',
+                            900: 'var(--brand-900, #14532d)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="theme-emerald min-h-full flex flex-col bg-slate-50 text-slate-900">
+
+    <header class="portfolio-header py-6 px-8 bg-slate-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div id="header-avatar-container"
+                    class="rounded-xl shadow-lg overflow-hidden w-12 h-12 flex items-center justify-center bg-slate-800 shrink-0">
+                    <i class="fa-solid fa-briefcase text-xl text-brand-400" id="header-icon"></i>
+                </div>
+                <div>
+                    <span id="header-business"
+                        class="text-xs font-semibold text-brand-400 uppercase tracking-widest">Service Business</span>
+                    <h1 id="header-title" class="text-xl font-bold tracking-tight">Professional Services Portfolio</h1>
+                    <p id="header-subtitle" class="text-xs text-slate-400">Student Service Business Showcase</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html"
+                    class="px-4 py-2 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left text-brand-400"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+
+        <!-- ========================================== -->
+        <!-- 1. BUSINESS INFO CAROUSEL SECTION          -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-images text-brand-600"></i> Company Showcase Carousel
+                </h3>
+                <div class="flex gap-1.5" id="carousel-dots-info">
+                    <button onclick="showInfoSlide(0)" class="w-3 h-3 rounded-full bg-brand-600 transition"
+                        id="dot-info-0" aria-label="Slide 1"></button>
+                    <button onclick="showInfoSlide(1)" class="w-3 h-3 rounded-full bg-slate-300 transition"
+                        id="dot-info-1" aria-label="Slide 2"></button>
+                    <button onclick="showInfoSlide(2)" class="w-3 h-3 rounded-full bg-slate-300 transition"
+                        id="dot-info-2" aria-label="Slide 3"></button>
+                </div>
+            </div>
+
+            <!-- Carousel Wrapper -->
+            <div
+                class="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-900 min-h-[380px] flex items-center justify-center">
+
+                <!-- SLIDE 1: Company Poster -->
+                <div class="carousel-info-slide absolute inset-0 transition-opacity duration-500 opacity-100 z-10"
+                    id="info-slide-0">
+                    <img id="img-info-slide-0" src="" alt="Company Poster"
+                        class="w-full h-full object-cover absolute inset-0 opacity-40"
+                        onerror="this.style.display='none'">
+
+                    <div
+                        class="absolute bottom-3 left-3 z-30 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-300 text-slate-900 text-[11px] font-bold flex items-center gap-1.5 shadow-md">
+                        <i class="fa-solid fa-image text-brand-600"></i> Business Info / Poster
+                    </div>
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-800/80 to-brand-900/90 p-8 flex flex-col items-center justify-center text-center text-white">
+                        <div
+                            class="w-16 h-16 bg-brand-600/30 border-2 border-brand-500 rounded-2xl flex items-center justify-center shadow-lg mb-3 backdrop-blur-sm">
+                            <i class="fa-solid fa-crown text-2xl text-brand-400"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-widest text-brand-400 font-bold mb-1">Company
+                            Poster</span>
+                        <h2 id="poster-company-name" class="text-2xl font-black tracking-tight mb-1">Apex Professional
+                            Services</h2>
+                        <p id="poster-tagline" class="text-xs text-slate-300 max-w-md mb-4">Your Trusted Partner for
+                            Quality Solutions</p>
+
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-900/80 p-3.5 rounded-xl border border-slate-700 w-full max-w-md backdrop-blur-sm">
+                            <div class="flex items-center gap-2 justify-center sm:justify-start">
+                                <i class="fa-solid fa-user text-brand-400"></i>
+                                <span>Owner: <strong id="poster-owner-name" class="text-white">Mr. Chen</strong></span>
+                            </div>
+                            <div class="flex items-center gap-2 justify-center sm:justify-start">
+                                <i class="fa-solid fa-phone text-brand-400"></i>
+                                <span id="poster-phone">(604) 555-0199</span>
+                            </div>
+                            <div class="flex items-center gap-2 justify-center sm:justify-start">
+                                <i class="fa-solid fa-envelope text-brand-400"></i>
+                                <span id="poster-email">contact@apexservice.local</span>
+                            </div>
+                            <div class="flex items-center gap-2 justify-center sm:justify-start">
+                                <i class="fa-solid fa-location-dot text-brand-400"></i>
+                                <span id="poster-address">Richmond, BC</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 2: List of Services -->
+                <div class="carousel-info-slide absolute inset-0 transition-opacity duration-500 opacity-0 z-0"
+                    id="info-slide-1">
+                    <img id="img-info-slide-1" src="" alt="Services"
+                        class="w-full h-full object-cover absolute inset-0 opacity-40"
+                        onerror="this.style.display='none'">
+
+                    <div
+                        class="absolute bottom-3 left-3 z-30 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-300 text-slate-900 text-[11px] font-bold flex items-center gap-1.5 shadow-md">
+                        <i class="fa-solid fa-image text-brand-600"></i> Services Overview
+                    </div>
+
+                    <div
+                        class="absolute inset-0 bg-slate-900/90 p-8 flex flex-col justify-center text-white backdrop-blur-xs">
+                        <div class="max-w-xl mx-auto w-full space-y-3">
+                            <div class="text-center mb-2">
+                                <span
+                                    class="text-xs uppercase tracking-widest text-brand-400 font-bold">Offerings</span>
+                                <h3 class="text-xl font-black">List of Services</h3>
+                            </div>
+                            <div class="space-y-2.5" id="carousel-services-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 3: Mock Customer Reviews -->
+                <div class="carousel-info-slide absolute inset-0 transition-opacity duration-500 opacity-0 z-0"
+                    id="info-slide-2">
+                    <img id="img-info-slide-2" src="" alt="Customer Reviews"
+                        class="w-full h-full object-cover absolute inset-0 opacity-40"
+                        onerror="this.style.display='none'">
+
+                    <div
+                        class="absolute bottom-3 left-3 z-30 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-300 text-slate-900 text-[11px] font-bold flex items-center gap-1.5 shadow-md">
+                        <i class="fa-solid fa-image text-brand-600"></i> Customer Reviews
+                    </div>
+
+                    <div
+                        class="absolute inset-0 bg-slate-900/90 p-8 flex flex-col justify-center text-white backdrop-blur-xs">
+                        <div class="max-w-xl mx-auto w-full space-y-4 text-center">
+                            <div>
+                                <span
+                                    class="text-xs uppercase tracking-widest text-brand-400 font-bold">Testimonials</span>
+                                <h3 class="text-xl font-black">Mock Customer Reviews</h3>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="carousel-reviews-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="prevInfoSlide()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition z-20"
+                    aria-label="Previous Slide">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button onclick="nextInfoSlide()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition z-20"
+                    aria-label="Next Slide">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- KEY DATA TEXTBOX SECTION                   -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-brand-600"></i> Key Business Data &amp; Overview
+                </h3>
+                <span class="text-xs text-slate-400">Service Profile</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Enterprise Name</span>
+                    <p id="info-box-company" class="font-bold text-slate-900 text-sm">Apex Professional Services</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Principal Owner</span>
+                    <p id="info-box-owner" class="font-bold text-slate-900 text-sm">Mr. Chen</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Primary Contact</span>
+                    <p id="info-box-contact" class="font-bold text-slate-900 text-sm">(604) 555-0199</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 2. BUSINESS FORMS CAROUSEL SECTION         -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice-dollar text-brand-600"></i> Business Forms &amp; Documentation
+                </h3>
+                <div class="flex gap-1.5" id="carousel-dots-forms"></div>
+            </div>
+
+            <div
+                class="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-900 min-h-[360px] flex items-center justify-center shadow-inner">
+                <div id="carousel-forms-slides-container" class="absolute inset-0 w-full h-full"></div>
+
+                <button onclick="prevFormSlide()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Previous Slide">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button onclick="nextFormSlide()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Next Slide">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 3. PURCHASES & TRANSACTIONS CAROUSEL       -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-brand-600"></i> Purchases &amp; Transactions Carousel
+                </h3>
+                <div class="flex gap-1.5" id="carousel-dots-purchases"></div>
+            </div>
+
+            <div
+                class="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-900 min-h-[360px] flex items-center justify-center shadow-inner">
+                <div id="carousel-purchases-slides-container" class="absolute inset-0 w-full h-full"></div>
+
+                <button onclick="prevPurchaseSlide()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Previous Slide">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button onclick="nextPurchaseSlide()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Next Slide">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 4. SERVICE / PRODUCT SOLD CAROUSEL         -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-hand-holding-dollar text-brand-600"></i> Service / Product Sold Carousel
+                </h3>
+                <div class="flex gap-1.5" id="carousel-dots-sales"></div>
+            </div>
+
+            <div
+                class="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-900 min-h-[360px] flex items-center justify-center shadow-inner">
+                <div id="carousel-sales-slides-container" class="absolute inset-0 w-full h-full"></div>
+
+                <button onclick="prevSaleSlide()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Previous Slide">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button onclick="nextSaleSlide()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Next Slide">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 5. REMIT TAX CAROUSEL SECTION              -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice text-brand-600"></i> Remit Tax Carousel
+                </h3>
+                <div class="flex gap-1.5" id="carousel-dots-tax"></div>
+            </div>
+
+            <!-- Carousel Wrapper -->
+            <div
+                class="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-900 min-h-[360px] flex items-center justify-center shadow-inner">
+                <div id="carousel-tax-slides-container" class="absolute inset-0 w-full h-full"></div>
+
+                <button onclick="prevTaxSlide()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Previous Slide">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button onclick="nextTaxSlide()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/90 text-white rounded-full flex items-center justify-center transition z-30 shadow-md"
+                    aria-label="Next Slide">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="portfolio-header py-6 mt-auto text-center text-xs text-slate-400 bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4">
+            Service Business Showcase &bull; Designed for Accounting &amp; Business Students
+        </div>
+    </footer>
+
+    <!-- Main Page Script -->
+    <script>
+        // Info Carousel State
+        let currentInfoIndex = 0;
+        const totalInfoSlides = 3;
+
+        function showInfoSlide(index) {
+            currentInfoIndex = (index + totalInfoSlides) % totalInfoSlides;
+            for (let i = 0; i < totalInfoSlides; i++) {
+                const slide = document.getElementById(`info-slide-${i}`);
+                const dot = document.getElementById(`dot-info-${i}`);
+                if (slide && dot) {
+                    if (i === currentInfoIndex) {
+                        slide.classList.remove('opacity-0', 'z-0');
+                        slide.classList.add('opacity-100', 'z-10');
+                        dot.classList.remove('bg-slate-300');
+                        dot.classList.add('bg-brand-600', 'w-5');
+                    } else {
+                        slide.classList.remove('opacity-100', 'z-10');
+                        slide.classList.add('opacity-0', 'z-0');
+                        dot.classList.remove('bg-brand-600', 'w-5');
+                        dot.classList.add('bg-slate-300');
+                    }
+                }
+            }
+        }
+
+        function nextInfoSlide() { showInfoSlide(currentInfoIndex + 1); }
+        function prevInfoSlide() { showInfoSlide(currentInfoIndex - 1); }
+
+        // Forms Carousel State
+        let currentFormIndex = 0;
+        let totalFormSlides = 0;
+
+        function showFormSlide(index) {
+            if (totalFormSlides === 0) return;
+            currentFormIndex = (index + totalFormSlides) % totalFormSlides;
+            for (let i = 0; i < totalFormSlides; i++) {
+                const slide = document.getElementById(`form-slide-${i}`);
+                const dot = document.getElementById(`dot-form-${i}`);
+                if (slide && dot) {
+                    if (i === currentFormIndex) {
+                        slide.classList.remove('opacity-0', 'z-0');
+                        slide.classList.add('opacity-100', 'z-10');
+                        dot.classList.remove('bg-slate-300');
+                        dot.classList.add('bg-brand-600', 'w-5');
+                    } else {
+                        slide.classList.remove('opacity-100', 'z-10');
+                        slide.classList.add('opacity-0', 'z-0');
+                        dot.classList.remove('bg-brand-600', 'w-5');
+                        dot.classList.add('bg-slate-300');
+                    }
+                }
+            }
+        }
+
+        function nextFormSlide() { showFormSlide(currentFormIndex + 1); }
+        function prevFormSlide() { showFormSlide(currentFormIndex - 1); }
+
+        // Purchases Carousel State
+        let currentPurchaseIndex = 0;
+        let totalPurchaseSlides = 0;
+
+        function showPurchaseSlide(index) {
+            if (totalPurchaseSlides === 0) return;
+            currentPurchaseIndex = (index + totalPurchaseSlides) % totalPurchaseSlides;
+            for (let i = 0; i < totalPurchaseSlides; i++) {
+                const slide = document.getElementById(`purchase-slide-${i}`);
+                const dot = document.getElementById(`dot-purchase-${i}`);
+                if (slide && dot) {
+                    if (i === currentPurchaseIndex) {
+                        slide.classList.remove('opacity-0', 'z-0');
+                        slide.classList.add('opacity-100', 'z-10');
+                        dot.classList.remove('bg-slate-300');
+                        dot.classList.add('bg-brand-600', 'w-5');
+                    } else {
+                        slide.classList.remove('opacity-100', 'z-10');
+                        slide.classList.add('opacity-0', 'z-0');
+                        dot.classList.remove('bg-brand-600', 'w-5');
+                        dot.classList.add('bg-slate-300');
+                    }
+                }
+            }
+        }
+
+        function nextPurchaseSlide() { showPurchaseSlide(currentPurchaseIndex + 1); }
+        function prevPurchaseSlide() { showPurchaseSlide(currentPurchaseIndex - 1); }
+
+        // Sales Carousel State
+        let currentSaleIndex = 0;
+        let totalSaleSlides = 0;
+
+        function showSaleSlide(index) {
+            if (totalSaleSlides === 0) return;
+            currentSaleIndex = (index + totalSaleSlides) % totalSaleSlides;
+            for (let i = 0; i < totalSaleSlides; i++) {
+                const slide = document.getElementById(`sale-slide-${i}`);
+                const dot = document.getElementById(`dot-sale-${i}`);
+                if (slide && dot) {
+                    if (i === currentSaleIndex) {
+                        slide.classList.remove('opacity-0', 'z-0');
+                        slide.classList.add('opacity-100', 'z-10');
+                        dot.classList.remove('bg-slate-300');
+                        dot.classList.add('bg-brand-600', 'w-5');
+                    } else {
+                        slide.classList.remove('opacity-100', 'z-10');
+                        slide.classList.add('opacity-0', 'z-0');
+                        dot.classList.remove('bg-brand-600', 'w-5');
+                        dot.classList.add('bg-slate-300');
+                    }
+                }
+            }
+        }
+
+        function nextSaleSlide() { showSaleSlide(currentSaleIndex + 1); }
+        function prevSaleSlide() { showSaleSlide(currentSaleIndex - 1); }
+
+        // Tax Remittance Carousel State
+        let currentTaxIndex = 0;
+        let totalTaxSlides = 0;
+
+        function showTaxSlide(index) {
+            if (totalTaxSlides === 0) return;
+            currentTaxIndex = (index + totalTaxSlides) % totalTaxSlides;
+            for (let i = 0; i < totalTaxSlides; i++) {
+                const slide = document.getElementById(`tax-slide-${i}`);
+                const dot = document.getElementById(`dot-tax-${i}`);
+                if (slide && dot) {
+                    if (i === currentTaxIndex) {
+                        slide.classList.remove('opacity-0', 'z-0');
+                        slide.classList.add('opacity-100', 'z-10');
+                        dot.classList.remove('bg-slate-300');
+                        dot.classList.add('bg-brand-600', 'w-5');
+                    } else {
+                        slide.classList.remove('opacity-100', 'z-10');
+                        slide.classList.add('opacity-0', 'z-0');
+                        dot.classList.remove('bg-brand-600', 'w-5');
+                        dot.classList.add('bg-slate-300');
+                    }
+                }
+            }
+        }
+
+        function nextTaxSlide() { showTaxSlide(currentTaxIndex + 1); }
+        function prevTaxSlide() { showTaxSlide(currentTaxIndex - 1); }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Load student avatar if available
+            if (typeof STUDENT_CONFIG !== 'undefined' && STUDENT_CONFIG.avatarUrl) {
+                const avatarContainer = document.getElementById('header-avatar-container');
+                if (avatarContainer) {
+                    avatarContainer.innerHTML = `<img src="pics/${STUDENT_CONFIG.avatarUrl}" alt="Avatar" class="w-full h-full object-cover">`;
+                }
+            }
+
+            // Populate from SERVICE_BUSINESS_DATA block
+            if (typeof SERVICE_BUSINESS_DATA !== 'undefined') {
+                // Populate top-left corner label if configured
+                if (SERVICE_BUSINESS_DATA.topBadge) {
+                    document.getElementById('header-business').innerText = SERVICE_BUSINESS_DATA.topBadge;
+                }
+
+                // Populate poster slide & info box
+                document.getElementById('poster-company-name').innerText = SERVICE_BUSINESS_DATA.companyName;
+                document.getElementById('poster-tagline').innerText = SERVICE_BUSINESS_DATA.tagline;
+                document.getElementById('poster-owner-name').innerText = SERVICE_BUSINESS_DATA.ownerName;
+                document.getElementById('poster-phone').innerText = SERVICE_BUSINESS_DATA.contactInfo.phone;
+                document.getElementById('poster-email').innerText = SERVICE_BUSINESS_DATA.contactInfo.email;
+                document.getElementById('poster-address').innerText = SERVICE_BUSINESS_DATA.contactInfo.address;
+
+                document.getElementById('info-box-company').innerText = SERVICE_BUSINESS_DATA.companyName;
+                document.getElementById('info-box-owner').innerText = SERVICE_BUSINESS_DATA.ownerName;
+                document.getElementById('info-box-contact').innerText = SERVICE_BUSINESS_DATA.contactInfo.phone;
+
+                // Set info carousel background images from bizPic variables
+                if (SERVICE_BUSINESS_DATA.bizPic1) document.getElementById('img-info-slide-0').src = "pics/" + SERVICE_BUSINESS_DATA.bizPic1;
+                if (SERVICE_BUSINESS_DATA.bizPic2) document.getElementById('img-info-slide-1').src = "pics/" + SERVICE_BUSINESS_DATA.bizPic2;
+                if (SERVICE_BUSINESS_DATA.bizPic3) document.getElementById('img-info-slide-2').src = "pics/" + SERVICE_BUSINESS_DATA.bizPic3;
+
+                // Populate Services Slide
+                const servContainer = document.getElementById('carousel-services-container');
+                servContainer.innerHTML = SERVICE_BUSINESS_DATA.services.map(s => `
+                    <div class="bg-slate-800/85 border border-slate-700 p-3 rounded-xl flex items-center justify-between backdrop-blur-xs">
+                        <div>
+                            <h4 class="font-bold text-xs text-white">${s.name}</h4>
+                            <p class="text-[11px] text-slate-300">${s.description}</p>
+                        </div>
+                        <span class="text-[11px] font-black text-brand-400 bg-brand-950/80 px-2 py-1 rounded-lg border border-brand-800/60 shrink-0 ml-2">${s.price}</span>
+                    </div>
+                `).join('');
+
+                // Populate Reviews Slide
+                const revContainer = document.getElementById('carousel-reviews-container');
+                revContainer.innerHTML = SERVICE_BUSINESS_DATA.reviews.map(r => `
+                    <div class="bg-slate-800/85 border border-slate-700 p-3.5 rounded-xl flex flex-col justify-between text-left backdrop-blur-xs">
+                        <p class="text-[11px] text-slate-200 italic mb-2">"${r.quote}"</p>
+                        <span class="text-[10px] font-bold text-brand-400">&mdash; ${r.author}</span>
+                    </div>
+                `).join('');
+
+                // Populate Dynamic Forms Carousel
+                const forms = SERVICE_BUSINESS_DATA.businessForms || [];
+                totalFormSlides = forms.length;
+
+                const formsContainer = document.getElementById('carousel-forms-slides-container');
+                const formDotsContainer = document.getElementById('carousel-dots-forms');
+
+                if (totalFormSlides > 0) {
+                    formsContainer.innerHTML = forms.map((form, i) => `
+                        <div class="carousel-slide absolute inset-0 transition-opacity duration-500 ${i === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}" id="form-slide-${i}">
+                            <img src="pics/${form.image}" alt="${form.title}" class="w-full h-full object-cover absolute inset-0 opacity-40" onerror="this.style.display='none'">
+                            
+                            <div class="absolute bottom-3 left-3 z-30 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-300 text-slate-900 text-[11px] font-bold flex items-center gap-1.5 shadow-md">
+                                <i class="fa-solid fa-image text-brand-600"></i> ${form.badge || 'Form ' + (i + 1)}
+                            </div>
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/80 to-slate-900/50 p-8 flex flex-col justify-end text-white backdrop-blur-2xs">
+                                <div class="max-w-lg space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] uppercase tracking-widest text-brand-400 font-extrabold bg-brand-950/80 px-2.5 py-0.5 rounded-md border border-brand-800/50">${form.badge || 'Form ' + (i + 1)}</span>
+                                        <span class="text-[10px] text-slate-400">Slide ${i + 1} of ${totalFormSlides}</span>
+                                    </div>
+                                    <h3 class="text-xl font-black tracking-tight">${form.title}</h3>
+                                    <p class="text-xs text-slate-300 leading-relaxed">${form.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    formDotsContainer.innerHTML = forms.map((_, i) => `
+                        <button onclick="showFormSlide(${i})" class="w-3 h-3 rounded-full ${i === 0 ? 'bg-brand-600 w-5' : 'bg-slate-300'} transition-all" id="dot-form-${i}" aria-label="Slide ${i + 1}"></button>
+                    `).join('');
+                }
+
+                // Populate Dynamic Purchases Carousel
+                const purchases = SERVICE_BUSINESS_DATA.purchases || [];
+                totalPurchaseSlides = purchases.length;
+
+                const purchasesContainer = document.getElementById('carousel-purchases-slides-container');
+                const purchaseDotsContainer = document.getElementById('carousel-dots-purchases');
+
+                if (totalPurchaseSlides > 0) {
+                    purchasesContainer.innerHTML = purchases.map((p, i) => `
+                        <div class="carousel-slide absolute inset-0 transition-opacity duration-500 ${i === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}" id="purchase-slide-${i}">
+                            <img src="pics/${p.image}" alt="${p.title}" class="w-full h-full object-cover absolute inset-0 opacity-40" onerror="this.style.display='none'">
+                            
+                            <div class="absolute bottom-3 left-3 z-30 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-300 text-slate-900 text-[11px] font-bold flex items-center gap-1.5 shadow-md">
+                                <i class="fa-solid fa-image text-brand-600"></i> ${p.badge || 'Purchase Slide ' + (i + 1)}
+                            </div>
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/80 to-slate-900/50 p-8 flex flex-col justify-end text-white backdrop-blur-2xs">
+                                <div class="max-w-lg space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] uppercase tracking-widest text-brand-400 font-extrabold bg-brand-950/80 px-2.5 py-0.5 rounded-md border border-brand-800/50">${p.badge || 'Purchase ' + (i + 1)}</span>
+                                        <span class="text-[10px] text-slate-400">Slide ${i + 1} of ${totalPurchaseSlides}</span>
+                                    </div>
+                                    <h3 class="text-xl font-black tracking-tight">${p.title}</h3>
+                                    <p class="text-xs text-slate-300 leading-relaxed">${p.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    purchaseDotsContainer.innerHTML = purchases.map((_, i) => `
+                        <button onclick="showPurchaseSlide(${i})" class="w-3 h-3 rounded-full ${i === 0 ? 'bg-brand-600 w-5' : 'bg-slate-300'} transition-all" id="dot-purchase-${i}" aria-label="Slide ${i + 1}"></button>
+                    `).join('');
+                }
+
+                // Populate Dynamic Sales Carousel
+                const sales = SERVICE_BUSINESS_DATA.sales || [];
+                totalSaleSlides = sales.length;
+
+                const salesContainer = document.getElementById('carousel-sales-slides-container');
+                const saleDotsContainer = document.getElementById('carousel-dots-sales');
+
+                if (totalSaleSlides > 0) {
+                    salesContainer.innerHTML = sales.map((s, i) => `
+                        <div class="carousel-slide absolute inset-0 transition-opacity duration-500 ${i === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}" id="sale-slide-${i}">
+                            <img src="pics/${s.image}" alt="${s.title}" class="w-full h-full object-cover absolute inset-0 opacity-40" onerror="this.style.display='none'">
+                            
+                            <div class="absolute bottom-3 left-3 z-30 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-300 text-slate-900 text-[11px] font-bold flex items-center gap-1.5 shadow-md">
+                                <i class="fa-solid fa-image text-brand-600"></i> ${s.badge || 'Sale Slide ' + (i + 1)}
+                            </div>
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/80 to-slate-900/50 p-8 flex flex-col justify-end text-white backdrop-blur-2xs">
+                                <div class="max-w-lg space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] uppercase tracking-widest text-brand-400 font-extrabold bg-brand-950/80 px-2.5 py-0.5 rounded-md border border-brand-800/50">${s.badge || 'Sale ' + (i + 1)}</span>
+                                        <span class="text-[10px] text-slate-400">Slide ${i + 1} of ${totalSaleSlides}</span>
+                                    </div>
+                                    <h3 class="text-xl font-black tracking-tight">${s.title}</h3>
+                                    <p class="text-xs text-slate-300 leading-relaxed">${s.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    saleDotsContainer.innerHTML = sales.map((_, i) => `
+                        <button onclick="showSaleSlide(${i})" class="w-3 h-3 rounded-full ${i === 0 ? 'bg-brand-600 w-5' : 'bg-slate-300'} transition-all" id="dot-sale-${i}" aria-label="Slide ${i + 1}"></button>
+                    `).join('');
+                }
+
+                // Populate Dynamic Tax Remittance Carousel
+                const taxRemittance = SERVICE_BUSINESS_DATA.taxRemittance || [];
+                totalTaxSlides = taxRemittance.length;
+
+                const taxContainer = document.getElementById('carousel-tax-slides-container');
+                const taxDotsContainer = document.getElementById('carousel-dots-tax');
+
+                if (totalTaxSlides > 0) {
+                    taxContainer.innerHTML = taxRemittance.map((t, i) => `
+                        <div class="carousel-slide absolute inset-0 transition-opacity duration-500 ${i === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}" id="tax-slide-${i}">
+                            <img src="pics/${t.image}" alt="${t.title}" class="w-full h-full object-cover absolute inset-0 opacity-40" onerror="this.style.display='none'">
+                            
+                            <div class="absolute bottom-3 left-3 z-30 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-300 text-slate-900 text-[11px] font-bold flex items-center gap-1.5 shadow-md">
+                                <i class="fa-solid fa-image text-brand-600"></i> ${t.badge || 'Tax Slide ' + (i + 1)}
+                            </div>
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/80 to-slate-900/50 p-8 flex flex-col justify-end text-white backdrop-blur-2xs">
+                                <div class="max-w-lg space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] uppercase tracking-widest text-brand-400 font-extrabold bg-brand-950/80 px-2.5 py-0.5 rounded-md border border-brand-800/50">${t.badge || 'Tax ' + (i + 1)}</span>
+                                        <span class="text-[10px] text-slate-400">Slide ${i + 1} of ${totalTaxSlides}</span>
+                                    </div>
+                                    <h3 class="text-xl font-black tracking-tight">${t.title}</h3>
+                                    <p class="text-xs text-slate-300 leading-relaxed">${t.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    taxDotsContainer.innerHTML = taxRemittance.map((_, i) => `
+                        <button onclick="showTaxSlide(${i})" class="w-3 h-3 rounded-full ${i === 0 ? 'bg-brand-600 w-5' : 'bg-slate-300'} transition-all" id="dot-tax-${i}" aria-label="Slide ${i + 1}"></button>
+                    `).join('');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
